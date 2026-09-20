@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="BitcoinX">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1B2A4A"/>
+      <stop offset="100%" stop-color="#0A1122"/>
+    </radialGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#29E0C8"/>
+      <stop offset="100%" stop-color="#4C8DFF"/>
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="128" fill="url(#bg)"/>
+  <circle cx="128" cy="128" r="125.7" fill="none" stroke="#4C8DFF" stroke-opacity="0.35" stroke-width="4.6"/>
+  <g fill="url(#mark)">
+    <text x="102" y="128" font-family="DejaVu Sans,Helvetica,Arial,sans-serif" font-weight="700"
+          font-size="154" text-anchor="middle" dominant-baseline="central">B</text>
+    <rect x="73.6" y="50.1" width="10.8" height="155.8" rx="5.4"/>
+    <rect x="98.2" y="50.1" width="10.8" height="155.8" rx="5.4"/>
+  </g>
+  <text x="191" y="168" font-family="DejaVu Sans,Helvetica,Arial,sans-serif" font-weight="700"
+        font-size="77" text-anchor="middle" dominant-baseline="central" fill="#E9F3FF">x</text>
+</svg>

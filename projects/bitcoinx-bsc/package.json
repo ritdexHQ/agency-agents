@@ -1,0 +1,35 @@
+{
+  "name": "bitcoinx-bsc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "BitcoinX (BTCx) - BTCB-backed 1:1 synthetic on BNB Smart Chain",
+  "scripts": {
+    "build": "hardhat compile",
+    "test": "hardhat test",
+    "coverage": "hardhat coverage",
+    "deploy:testnet": "hardhat run scripts/01_deploy.ts --network bscTestnet",
+    "deploy:mainnet": "hardhat run scripts/01_deploy.ts --network bsc",
+    "verify:testnet": "hardhat run scripts/02_verify.ts --network bscTestnet",
+    "verify:mainnet": "hardhat run scripts/02_verify.ts --network bsc",
+    "pool:mainnet": "hardhat run scripts/03_seed_liquidity.ts --network bsc",
+    "peg:mainnet": "hardhat run scripts/05_peg_monitor.ts --network bsc",
+    "check:testnet": "hardhat run scripts/00_check_addresses.ts --network bscTestnet",
+    "check:mainnet": "hardhat run scripts/00_check_addresses.ts --network bsc",
+    "pool:testnet": "hardhat run scripts/03_seed_liquidity.ts --network bscTestnet",
+    "lens:testnet": "hardhat run scripts/04_deploy_lens.ts --network bscTestnet",
+    "lens:mainnet": "hardhat run scripts/04_deploy_lens.ts --network bsc",
+    "peg:testnet": "hardhat run scripts/05_peg_monitor.ts --network bscTestnet",
+    "assets:mainnet": "hardhat run scripts/06_make_listing_assets.ts --network bsc",
+    "assets:testnet": "hardhat run scripts/06_make_listing_assets.ts --network bscTestnet",
+    "logo": "python3 brand/generate_logo.py",
+    "gas": "hardhat run scripts/99_gas_report.ts"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@openzeppelin/contracts": "5.1.0",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.10",
+    "solc": "0.8.24",
+    "typescript": "^5.5.4"
+  }
+}

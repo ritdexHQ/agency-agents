@@ -1,0 +1,11 @@
+node_modules/
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+.env
+deployments/*.local.json
+
+# Lockfile duoc commit co chu dich: deploy hop dong can build tai lap duoc.
+!package-lock.json
