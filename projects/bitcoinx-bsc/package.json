@@ -31,7 +31,8 @@
     "ds:testnet": "hardhat run scripts/08_dexscreener_check.ts --network bscTestnet",
     "bootstrap:mainnet": "hardhat run scripts/09_bootstrap_trade.ts --network bsc",
     "bootstrap:testnet": "hardhat run scripts/09_bootstrap_trade.ts --network bscTestnet",
-    "bootstrap:local": "hardhat run scripts/09_bootstrap_trade.ts --network localhost"
+    "bootstrap:local": "hardhat run scripts/09_bootstrap_trade.ts --network localhost",
+    "assets:local": "hardhat run scripts/06_make_listing_assets.ts --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",

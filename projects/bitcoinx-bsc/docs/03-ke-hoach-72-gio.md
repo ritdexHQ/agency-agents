@@ -46,7 +46,7 @@ ví OKX" — ngày đó do OKX quyết định, không phải bạn.
 | 32–33 | Kiểm tra DEX Screener đã hiện cặp | `npm run ds:mainnet` |
 | 33–34 | Sinh lại hồ sơ với địa chỉ mainnet thật | `npm run assets:mainnet` |
 | 34–36 | Nộp cập nhật thông tin token trên BscScan | Ký xác thực từ ví deployer |
-| 36–38 | **Mua DEX Screener Enhanced Token Info** (nếu ngân sách cho phép) | ~$299, thường có logo dưới 15 phút |
+| 36–38 | **Mua DEX Screener Enhanced Token Info** | ~$299 (gói $299, KHÔNG phải $499). Điền theo `tokenlist/dexscreener-submission.md` |
 | 38–44 | Nộp DeBank (cho Rabby), OKX ticket, PancakeSwap token list | Xem `04-logo-va-gia-tren-vi.md` |
 | 44–46 | Bật giám sát neo giá định kỳ | Cron 5 phút, `npm run peg:mainnet` |
 | 46–48 | **Bàn giao quyền sở hữu vault** | Xem `05-bao-mat-va-van-hanh.md` |
@@ -85,15 +85,11 @@ làm `LOGO_BASE_URL`.
 
 Nói trước với mọi người liên quan, tránh hiểu nhầm về sau:
 
-- **Logo trên DEX Screener nếu giữ đúng ngân sách $200** — gói Enhanced Token
-  Info ~$299 vượt toàn bộ ngân sách, và sau khi bỏ CoinGecko thì không còn đường
-  miễn phí nào khác.
 - Logo trong ví OKX / Trust Wallet — phụ thuộc xét duyệt bên thứ ba, tính bằng
   tuần, và Trust Wallet còn đòi 10.000 holder + 15.000 giao dịch + audit.
 - Thanh khoản đủ sâu để giữ neo chặt — ở $175, arbitrage chỉ có lãi khi giá lệch
   quá ~3,7%.
 
 Cái **chắc chắn có** sau 72 giờ: một token sống, mã nguồn công khai, cơ chế neo
-1:1 kiểm chứng được, **giá và biểu đồ trên DEX Screener**, website bằng chứng dự
-trữ, và mọi hồ sơ miễn phí đã nộp. Thêm $299 thì có cả logo trên DEX Screener
-ngay trong ngày.
+1:1 kiểm chứng được, **giá, biểu đồ, logo và banner trên DEX Screener**, website
+bằng chứng dự trữ, và mọi hồ sơ miễn phí đã nộp.

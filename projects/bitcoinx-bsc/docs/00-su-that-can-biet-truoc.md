@@ -73,9 +73,21 @@ BSC sẽ bị đọc theo hai cách rất khác nhau:
 
 Ba điểm cụ thể cần xử lý:
 
-1. **Nhận diện phải phân biệt được.** Logo trong `brand/` cố ý dùng nền navy và
-   gradient teal–xanh, **không** dùng tròn cam chữ B nghiêng của Bitcoin. Đừng đổi
-   lại cho "giống Bitcoin hơn" — đó chính là thứ khiến hồ sơ bị đánh dấu mạo danh.
+1. **Nhận diện — quyết định đã chốt, và cái giá của nó.** Logo dự án dùng đĩa cam
+   ký hiệu ₿ trắng, cùng họ với Bitcoin. Với một wrapper **thật sự** được bảo
+   chứng 1:1 thì điều đó hợp lệ và là thông lệ ngành: WBTC, BTCB, cbBTC đều dùng
+   ký hiệu tiền tệ màu cam.
+
+   Khác biệt là các token đó đều mang **dấu phân biệt** riêng (BTCB gắn huy hiệu
+   Binance, cbBTC dùng xanh Coinbase). Nhận diện hiện tại không có dấu nào, nên ở
+   kích thước nhỏ trong ví nó đọc ra "Bitcoin". Hệ quả phải chấp nhận:
+
+   - Toàn bộ việc phân biệt dồn sang **tên, ký hiệu và mô tả** — phải giữ câu
+     "BTCx không phải Bitcoin" thật rõ ở mọi nơi, không có ngoại lệ.
+   - Đây là điểm bên duyệt hồ sơ hay gắn cờ. Bị gắn cờ mạo danh rất khó gỡ về sau.
+
+   Có sẵn bản có chữ `x` làm dấu phân biệt, đổi bằng một lệnh:
+   `BTCX_THEME=orange npm run logo` (hoặc `navy` cho bản nhận diện riêng hoàn toàn).
 2. **Mô tả phải nói rõ bản chất.** Mọi nơi mô tả token (`tokenlist/`, website,
    form đăng ký) đều phải có câu: BTCx được bảo chứng 1:1 bởi BTCB, **không phải
    Bitcoin**, và redeem được tại `BitcoinXVault`.

@@ -23,19 +23,28 @@ giao dịch nào thì cặp không xuất hiện. Đó là việc của `npm run
 
 ---
 
-## 2. Bỏ CoinGecko thì logo chỉ còn một đường: trả $299
+## 2. Bỏ CoinGecko thì logo chỉ còn một đường: Enhanced Token Info
 
 DEX Screener lấy logo từ các token list được hỗ trợ — CoinGecko là nguồn chính.
 Gói **Enhanced Token Info** tồn tại đúng để đi vòng qua điều đó: nó cho hiển thị
-logo, website và social "bất kể tình trạng niêm yết trên dịch vụ bên thứ ba".
+logo, banner, website và social "bất kể tình trạng niêm yết trên dịch vụ bên thứ
+ba".
 
-Ghép hai điều đó lại:
+**Đã chốt: ngân sách $500, mua gói này.** Nó là khoản chi duy nhất trong toàn bộ
+kế hoạch mua được một kết quả hiển thị chắc chắn, không qua hàng đợi xét duyệt.
 
-> **Bỏ CoinGecko + ngân sách $200 = có giá và biểu đồ trên DEX Screener, không có logo.**
-> Không có đường miễn phí nào khác. $299 lớn hơn toàn bộ ngân sách, nên đây không
-> phải lựa chọn trong $200 — đây là lý do để nâng ngân sách, hoặc chấp nhận không có logo.
+| | |
+|---|---|
+| Giá | Từ **$299**, có các gói tới $499 — chọn gói $299 để vừa ngân sách |
+| Thanh toán | Crypto phổ biến, hoặc thẻ tín dụng/ghi nợ |
+| Xử lý | Thường vài phút, có thể tới 12 giờ |
+| Hỗ trợ | support@dexscreener.com |
 
-Và hệ quả thứ hai, với mục tiêu ban đầu là logo + giá trong ví OKX/Rabby:
+Giá và điều khoản đổi theo thời gian — mở đúng trang marketplace kiểm tra ngay
+trước khi trả tiền, và **đừng mua gói $499**: nó vượt ngân sách $500 sau khi đã
+trừ gas và thanh khoản.
+
+Hệ quả thứ hai của việc bỏ CoinGecko, với mục tiêu ban đầu là logo + giá trong ví:
 
 | Ví | Còn khả thi khi bỏ CoinGecko? |
 |---|---|
@@ -44,8 +53,8 @@ Và hệ quả thứ hai, với mục tiêu ban đầu là logo + giá trong ví
 | **Trust Wallet** | Không — vẫn đòi 10.000 holder + 15.000 giao dịch + audit |
 | **MetaMask** | Chỉ qua token list tự host, người dùng phải tự import |
 
-Nếu logo trong ví OKX là mục tiêu thật sự thì CoinGecko vẫn là đường ngắn nhất và
-miễn phí. Bỏ nó là đánh đổi có thật, không phải chỉ bớt một việc giấy tờ.
+Enhanced Token Info **không** đưa logo sang các ví đó — nó chỉ tác dụng trên DEX
+Screener. Đừng nhầm hai việc.
 
 ---
 
@@ -67,20 +76,36 @@ npm run ds:mainnet                              # kiểm tra đã được index
 giá bao nhiêu, thanh khoản bao nhiêu, logo/website/social đã hiện chưa, và trạng
 thái đơn Enhanced Token Info nếu đã mua.
 
-### Bước 2 — Logo trên DEX Screener (~$299, dưới 15 phút)
+### Bước 2 — Mua Enhanced Token Info (~$299)
 
 https://marketplace.dexscreener.com/product/token-info
 
-Chuẩn bị sẵn từ `tokenlist/submission.json` và `brand/`:
+**Điều kiện tiên quyết:** cặp phải đã được index. Gói này gắn thông tin vào một
+trang cặp đang tồn tại, nên phải làm xong Bước 1 trước. Chạy `npm run ds:mainnet`
+và thấy `DA DUOC INDEX` rồi mới mở ví ra trả tiền.
 
-- [ ] Địa chỉ hợp đồng dạng checksum
-- [ ] Logo PNG — dùng `brand/btcx-256.png`
-- [ ] Website sống — trang trong `web/`, xem `03-ke-hoach-72-gio.md`
-- [ ] Mô tả nêu rõ: bảo chứng 1:1 bởi BTCB, **không phải Bitcoin**, redeem được tại vault
-- [ ] Ít nhất một kênh social có người trả lời
+Toàn bộ nội dung cần điền đã được sinh sẵn — chạy `npm run assets:mainnet` rồi mở
+[`tokenlist/dexscreener-submission.md`](../tokenlist/) và copy từng ô.
 
-Giá và điều khoản đổi theo thời gian — mở đúng trang marketplace kiểm tra trước
-khi trả tiền.
+| Ô | Dùng file / nội dung |
+|---|---|
+| Chain | BNB Smart Chain |
+| Địa chỉ token | `btcx` trong `tokenlist/submission.json` (đã checksum) |
+| Icon / logo | `brand/btcx-256.png` |
+| Header / banner | `brand/btcx-banner-600x200.png` — **tỉ lệ 3:1, tối thiểu 600px rộng** |
+| Website | URL trang trong `web/` |
+| Mô tả | Đoạn dựng sẵn trong `dexscreener-submission.md` |
+| Social | Ít nhất một kênh có người trả lời |
+
+Bắt buộc trong ô mô tả: **BTCx không phải Bitcoin**, được bảo chứng 1:1 bởi BTCB,
+redeem được tại vault. Đây vừa là điều đúng đắn với người dùng, vừa là thứ giúp
+hồ sơ không bị đọc thành mạo danh — xem ghi chú về nhận diện ở cuối trang.
+
+Sau khi trả tiền, theo dõi bằng:
+
+```bash
+npm run ds:mainnet     # in ra trang thai don: processing / approved / rejected
+```
 
 ### Bước 3 — Những nơi miễn phí còn lại
 
@@ -128,6 +153,41 @@ thanh khoản quá mỏng, hay không có giao dịch nào trong 24h.
 > liệu thật**. Nó xử lý được mọi trường hợp thiếu trường, và in nguyên lỗi khi
 > API trả về khác dự kiến. Lần chạy đầu trên máy bạn, đối chiếu với trang web
 > DEX Screener một lượt.
+
+---
+
+## 6. Bộ nhận diện trong `brand/`
+
+Sinh lại bất cứ lúc nào: `npm run logo`.
+
+| File | Dùng ở đâu |
+|---|---|
+| `btcx-32.png` | Token list, icon nhỏ trong ví |
+| `btcx-128.png` | OKX (một số nơi yêu cầu 128×128) |
+| `btcx-200.png` | Kích thước phổ biến cho biểu mẫu |
+| `btcx-256.png` / `logo.png` | **Icon cho Enhanced Token Info**; Trust Wallet cần đúng tên `logo.png`, dưới 100KB |
+| `btcx-banner-600x200.png` | **Token Header của DEX Screener** — tỉ lệ 3:1, tối thiểu 600px rộng |
+| `btcx-banner-1200x400.png` · `-1800x600.png` | Bản độ phân giải cao của banner |
+| `btcx-512.png`, `btcx-1024.png` | Website, ảnh mạng xã hội |
+| `btcx-logo.svg` | Vector cho website và tài liệu |
+
+**Ghi chú về nhận diện.** Logo dùng đĩa cam ký hiệu ₿ trắng, cùng họ với Bitcoin
+— hợp lệ cho một wrapper thật sự bảo chứng 1:1, đúng như WBTC, BTCB, cbBTC. Khác
+biệt là các token đó đều mang dấu phân biệt riêng (BTCB gắn huy hiệu Binance,
+cbBTC dùng xanh Coinbase), còn bản này thì không.
+
+Vì vậy **toàn bộ việc phân biệt dồn vào phần chữ**: câu "BTCx không phải Bitcoin,
+được bảo chứng 1:1 bởi BTCB, redeem được tại vault" phải có trong mọi hồ sơ — kể
+cả ô mô tả của Enhanced Token Info. Bỏ câu đó ra là tự chuốc rủi ro bị gắn cờ mạo
+danh ở đúng nơi vừa trả $299.
+
+Bản có chữ `x` làm dấu phân biệt luôn sẵn sàng:
+
+```bash
+BTCX_THEME=orange npm run logo   # đĩa cam + chữ x navy
+BTCX_THEME=navy   npm run logo   # nhận diện riêng hoàn toàn
+BTCX_THEME=bitcoin npm run logo  # bản hiện tại (mặc định)
+```
 
 ---
 

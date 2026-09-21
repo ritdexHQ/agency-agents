@@ -23,12 +23,11 @@ lệch, người khác kiếm được tiền bằng cách kéo nó về — và
 bộ cơ chế neo giá, và là lý do repo này xoay quanh `BitcoinXVault` chứ không
 xoay quanh oracle.
 
-Với ngân sách **$200 / 72 giờ**, đây là ranh giới trung thực:
+Với ngân sách **$500 / 72 giờ**, đây là ranh giới trung thực:
 
 | | |
 |---|---|
-| ✅ Làm được | Token sống, verify mã nguồn, neo 1:1 chạy thật, **giá + biểu đồ trên DEX Screener** (tự động, miễn phí, vài phút), website bằng chứng dự trữ, mọi hồ sơ miễn phí đã nộp |
-| ❌ Không làm được với đúng $200 | **Logo trên DEX Screener** — gói Enhanced Token Info ~$299 vượt toàn bộ ngân sách, và sau khi bỏ CoinGecko thì không còn đường miễn phí nào |
+| ✅ Làm được | Token sống, verify mã nguồn, neo 1:1 chạy thật, **giá + biểu đồ + logo + banner trên DEX Screener**, website bằng chứng dự trữ, mọi hồ sơ miễn phí đã nộp |
 | ❌ Không làm được trong 72 giờ | Logo trong ví OKX / Trust Wallet (xét duyệt hàng tuần; Trust Wallet đòi 10.000 holder + 15.000 giao dịch + audit) |
 
 Chi tiết và số liệu: **[`docs/00-su-that-can-biet-truoc.md`](docs/00-su-that-can-biet-truoc.md)** ·
@@ -97,7 +96,7 @@ npm run assets:mainnet                          # sinh hồ sơ listing từ đ�
 |---|---|
 | `npm test` | Chạy toàn bộ test |
 | `npm run gas` | Báo cáo gas và kích thước bytecode |
-| `npm run logo` | Sinh logo 32→1024 px + SVG + `logo.png` cho Trust Wallet |
+| `npm run logo` | Sinh logo 32→1024 px + banner 3:1 cho DEX Screener + SVG + `logo.png` cho Trust Wallet |
 | `npm run check:*` | Đối chiếu địa chỉ BTCB / Chainlink / PancakeSwap với on-chain |
 | `npm run deploy:*` | Deploy vault (tạo luôn token) + kiểm tra sau deploy |
 | `npm run verify:*` | Verify mã nguồn trên BscScan |
@@ -131,7 +130,7 @@ Xuất bản qua GitHub Pages: copy `deploy/github-pages.yml` vào
 
 ---
 
-## Ngân sách $200
+## Ngân sách $500
 
 Giá tham chiếu on-chain ngày 20/09/2026: BTC ≈ $81.178, BNB ≈ $762,43.
 
@@ -139,18 +138,25 @@ Giá tham chiếu on-chain ngày 20/09/2026: BTC ≈ $81.178, BNB ≈ $762,43.
 |---|---:|
 | BNB cho gas (dư kể cả ở 3 gwei) | $15 |
 | Thanh khoản pool BTCx/BTCB (~0,002156 BTC) | $175 |
-| Dự phòng | $10 |
+| DEX Screener Enhanced Token Info | $299 |
+| Dự phòng | $11 |
 
 Toàn bộ chi phí triển khai on-chain vào khoảng **$0,67 ở 0,1 gwei**, hoặc
 **$20 ở 3 gwei**. Gas không phải vấn đề.
 
-Khoản phải quyết định riêng: **DEX Screener Enhanced Token Info ~$299** — đường
-duy nhất còn lại để có logo trên DEX Screener sau khi bỏ CoinGecko. Nó lớn hơn
-toàn bộ ngân sách $200, nên không cắt chỗ khác bù được. Hoặc chấp nhận có giá mà
-không có logo, hoặc nâng ngân sách lên khoảng $500.
+Chỉ còn $11 dự phòng: **rút BTCB đúng một lần** khỏi sàn, và **chọn gói $299**
+(DEX Screener có gói tới $499 — mua nhầm là vỡ ngân sách).
 
 Bảng phân bổ đầy đủ, so sánh độ sâu V2 vs V3, và thứ tự ưu tiên khi nâng ngân
 sách: [`docs/02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md).
+
+### Nhận diện
+
+Logo dùng đĩa cam ký hiệu ₿ trắng — cùng họ với Bitcoin, hợp lệ cho một wrapper
+thật sự bảo chứng 1:1 (WBTC, BTCB, cbBTC đều vậy). Khác biệt: các token đó đều
+có dấu phân biệt riêng, bản này thì không — nên **toàn bộ việc phân biệt dồn vào
+phần chữ**, và câu "BTCx không phải Bitcoin" phải có ở mọi hồ sơ. Bản có chữ `x`
+làm dấu phân biệt: `BTCX_THEME=orange npm run logo`.
 
 ---
 
@@ -160,7 +166,7 @@ sách: [`docs/02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md).
 |---|---|
 | [`00-su-that-can-biet-truoc.md`](docs/00-su-that-can-biet-truoc.md) | Ba sự thật quyết định toàn bộ thiết kế — đọc trước khi tiêu đồng nào |
 | [`01-kien-truc-neo-gia.md`](docs/01-kien-truc-neo-gia.md) | Cơ chế neo giá và lý do từng quyết định thiết kế |
-| [`02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md) | Gas đo thật, phân bổ vốn, độ sâu thanh khoản |
+| [`02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md) | Gas đo thật, phân bổ $500, độ sâu thanh khoản |
 | [`03-ke-hoach-72-gio.md`](docs/03-ke-hoach-72-gio.md) | Lịch triển khai theo giờ, có cổng chặn |
 | [`04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md) | **DEX Screener trước, ví sau** — index tự động, gói logo $299, và hệ quả của việc bỏ CoinGecko |
 | [`05-bao-mat-va-van-hanh.md`](docs/05-bao-mat-va-van-hanh.md) | Checklist bảo mật, xử lý quyền sở hữu, giám sát, giới hạn đã biết |

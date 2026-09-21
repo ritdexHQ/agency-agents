@@ -1,4 +1,4 @@
-# 02 — Ngân sách $200: phân bổ và con số thật
+# 02 — Ngân sách $500: phân bổ và con số thật
 
 > Giá tham chiếu dùng trong trang này, lấy on-chain ngày **20/09/2026**:
 > **BTC ≈ $81.178** · **BNB ≈ $762,43**. Tính lại theo giá lúc bạn triển khai.
@@ -29,7 +29,7 @@ Chi phí vận hành cho người dùng cuối: mint ~$0,005, redeem ~$0,005, ch
 
 ---
 
-## Phân bổ $200
+## Phân bổ $500
 
 | Khoản | Số tiền | Quy ra |
 |---|---:|---|
@@ -37,7 +37,12 @@ Chi phí vận hành cho người dùng cuối: mint ~$0,005, redeem ~$0,005, ch
 | Thanh khoản pool BTCx/BTCB | $175 | ~0,002156 BTC |
 | &nbsp;&nbsp;↳ nửa khoá trong vault làm bảo chứng | $87,50 | ~0,0010779 BTCB → mint ra BTCx |
 | &nbsp;&nbsp;↳ nửa còn lại là BTCB nằm trong pool | $87,50 | ~0,0010779 BTCB |
-| Dự phòng (trượt giá, phí rút sàn, mua hụt) | $10 | |
+| **DEX Screener Enhanced Token Info** | **$299** | Logo + banner + website + social trên trang cặp |
+| Dự phòng (trượt giá, phí rút sàn, mua hụt) | $11 | |
+
+Chỉ còn $11 dự phòng, nên hai điều phải làm đúng ngay lần đầu: **rút BTCB đúng
+một lần** khỏi sàn, và **chọn gói $299** — DEX Screener có các gói tới $499, mua
+nhầm là vỡ ngân sách.
 
 Lưu ý khi mua: phí rút BTCB khỏi sàn tập trung có thể ăn mất một phần đáng kể của
 $175 nếu bạn rút nhiều lần. **Rút đúng một lần.**
@@ -88,29 +93,31 @@ trong mọi trường hợp.
 
 ---
 
-## Quyết định $299: mua logo DEX Screener hay không
+## Khoản $299: đã quyết mua
 
 Đã bỏ CoinGecko và CoinMarketCap khỏi kế hoạch. DEX Screener lấy logo từ token
 list được hỗ trợ (CoinGecko là nguồn chính) **hoặc** từ gói Enhanced Token Info
 trả phí. Bỏ nguồn thứ nhất thì chỉ còn nguồn thứ hai.
 
-| | Ngân sách $200 | Ngân sách $500 |
+| | Ngân sách $200 (đã bỏ) | **Ngân sách $500 (đang dùng)** |
 |---|---|---|
 | BNB gas | $15 | $15 |
 | Thanh khoản pool | $175 | $175 |
-| Enhanced Token Info | — | $299 |
+| Enhanced Token Info | — | **$299** |
 | Dự phòng | $10 | $11 |
-| **Giá + biểu đồ trên DEX Screener** | Có | Có |
-| **Logo + website + social trên DEX Screener** | **Không** | Có, thường dưới 15 phút sau khi trả |
+| Giá + biểu đồ trên DEX Screener | Có | Có |
+| Logo + banner + social trên DEX Screener | Không | **Có** — thường vài phút, tối đa 12 giờ |
 
-**$299 lớn hơn toàn bộ ngân sách $200**, nên đây không phải chuyện cắt giảm chỗ
-khác để bù. Không thể hạ thanh khoản xuống để lấy tiền mua logo — bỏ hết $175
-vào đó vẫn thiếu. Hai lựa chọn thật sự là: chấp nhận không có logo, hoặc nâng
-ngân sách lên khoảng $500.
+Lý do chọn: trong tất cả các khoản chi có thể, $299 này là khoản duy nhất mua
+được một kết quả hiển thị chắc chắn, không qua hàng đợi xét duyệt. Mọi thứ khác
+đều là hàng đợi hoặc là điều kiện về quy mô.
 
-Khuyến nghị: **nâng lên $500.** Trong tất cả các khoản chi có thể, $299 này là
-khoản duy nhất mua được một kết quả hiển thị chắc chắn, không qua hàng đợi xét
-duyệt, trong vòng 15 phút. Mọi thứ khác đều là hàng đợi hoặc là điều kiện về quy mô.
+Ba điều cần biết trước khi trả tiền:
+
+- **Phải index xong trước.** Gói này gắn thông tin vào một trang cặp đang tồn
+  tại. Chạy `npm run ds:mainnet` thấy `DA DUOC INDEX` rồi mới mua.
+- **Nó chỉ tác dụng trên DEX Screener.** Không đưa logo sang ví OKX hay Rabby.
+- **Thanh toán bằng crypto hoặc thẻ.** Xử lý thường vài phút, có thể tới 12 giờ.
 
 ---
 
@@ -118,7 +125,6 @@ duyệt, trong vòng 15 phút. Mọi thứ khác đều là hàng đợi hoặc 
 
 | Thêm | Chi phí | Mở ra điều gì |
 |---|---:|---|
-| DEX Screener Enhanced Token Info | ~$299 | Logo + website + social trên trang cặp, dưới 15 phút, không cần CoinGecko. **Ưu tiên số một khi đã bỏ CoinGecko.** |
 | Nâng thanh khoản lên ~$2.400 | +$2.200 | Ngưỡng để arbitrage giữ neo trong vòng 1% có lãi — tức là neo giá mới thật sự chặt. Con số này tính ra ở `06-bot-giu-neo.md`. |
 | Audit bảo mật | $5.000–15.000 | Điều kiện bắt buộc của Trust Wallet, và là thứ duy nhất khiến người lạ dám bỏ tiền thật vào vault. |
 
@@ -126,5 +132,4 @@ Không khuyến nghị mua **Boosts** ($100–$1.500) ở giai đoạn này: nó
 chứ không mua logo, và đổ lưu lượng vào một pool $175 là cách nhanh nhất để mất
 uy tín. Xem `04-logo-va-gia-tren-vi.md`.
 
-Nếu giữ đúng $200: làm xong phần kỹ thuật, đưa giá lên DEX Screener, nộp hết các
-nơi miễn phí, rồi dùng kết quả đó để quyết định có rót thêm hay không.
+Sau $500 này, khoản đáng cân nhắc tiếp theo là thanh khoản — không phải quảng cáo.

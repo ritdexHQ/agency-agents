@@ -18,6 +18,8 @@ Cần có:
 - [ ] ~0,02 BNB trong ví đó (gas). Ở giá BNB $762 là khoảng **$15**.
 - [ ] ~0,002156 BTCB trong ví đó (thanh khoản). Khoảng **$175**.
       **Rút một lần** từ sàn — rút nhiều lần ăn phí nhiều lần.
+- [ ] **$299** để mua DEX Screener Enhanced Token Info (crypto hoặc thẻ).
+      Trả ở bước 7, sau khi cặp đã được index.
 - [ ] API key BscScan (miễn phí, để verify mã nguồn)
 - [ ] Một website sống (xem mục 6). Mọi hồ sơ listing đều bắt buộc có.
 
@@ -181,15 +183,29 @@ khoá, đọc trực tiếp từ BSC trong trình duyệt.
 
 | # | Nơi | Chi phí | Thời gian | Được gì |
 |---|---|---|---|---|
-| 1 | **DEX Screener — Enhanced Token Info** | ~$299 | thường < 15 phút | **Logo + website + social trên trang cặp** |
+| 1 | **DEX Screener — Enhanced Token Info** | **$299** | vài phút → 12 giờ | **Logo + banner + website + social trên trang cặp** |
 | 2 | BscScan — Update Token Info | miễn phí | vài ngày | Logo + mô tả trên trang token; ký xác thực từ ví deployer |
 | 3 | DeBank | miễn phí | vài tuần | Dữ liệu token cho **Rabby** |
 | 4 | OKX Web3 Wallet — ticket hỗ trợ | miễn phí | vài tuần | Kèm PNG 256×256 |
 | 5 | Token list tự host | miễn phí | ngay lập tức | Logo cho người dùng chịu import |
 | 6 | PR vào `pancakeswap/token-list` | miễn phí | — | Dùng file tokenlist đã sinh |
 
-**Điều kiện dừng:** $299 vượt toàn bộ ngân sách $200. Nếu không nâng ngân sách
-thì bỏ qua mục 1 — token vẫn có giá và biểu đồ, chỉ không có logo trên DEX Screener.
+Với mục 1, mở [`tokenlist/dexscreener-submission.md`](tokenlist/) — mọi ô cần điền
+đã sinh sẵn từ địa chỉ thật, kể cả đoạn mô tả. Copy từng ô, đừng gõ tay địa chỉ
+hợp đồng vào một form trả phí.
+
+**Ba điều kiện dừng ở bước này:**
+
+- Chưa `DA DUOC INDEX` thì chưa trả tiền — gói này gắn vào một trang cặp đang tồn tại.
+- Chọn đúng **gói $299**. DEX Screener có gói tới $499; ngân sách $500 không chịu được.
+- Ô mô tả **phải** có câu "BTCx is NOT Bitcoin". Logo cùng họ Bitcoin mà mô tả
+  không nói rõ là đúng định nghĩa mạo danh.
+
+Theo dõi sau khi trả tiền:
+
+```bash
+npm run ds:mainnet     # in trạng thái đơn: processing / approved / rejected
+```
 
 Không mua Boosts ở giai đoạn này: nó mua lượt xem chứ không mua logo.
 

@@ -65,6 +65,12 @@ jobs:
           # Trust Wallet: 256x256, duoi 100KB.
           if im.size != (256, 256) or n >= 100_000:
               print(f"FAIL {logo}: {im.size} {n} bytes"); ok = False
+          # DEX Screener Token Header: ty le 3:1, toi thieu 600px rong.
+          for bw, bh in ((600, 200), (1200, 400), (1800, 600)):
+              f = os.path.join(here, f"btcx-banner-{bw}x{bh}.png")
+              im = Image.open(f)
+              if im.size != (bw, bh) or im.width != im.height * 3 or im.width < 600:
+                  print(f"FAIL {f}: {im.size}"); ok = False
           if not os.path.getsize(os.path.join(here, "btcx-logo.svg")):
               print("FAIL btcx-logo.svg rong"); ok = False
           print("brand assets OK" if ok else "brand assets INVALID")

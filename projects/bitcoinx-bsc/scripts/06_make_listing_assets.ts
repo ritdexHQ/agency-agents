@@ -84,8 +84,9 @@ async function main() {
     description,
   };
 
+  const local = Number(chainId) === 31337 ? ".local" : "";
   const write = (name: string, data: unknown) => {
-    const p = path.join(outDir, name);
+    const p = path.join(outDir, name.replace(/(\.[^.]+)$/, `${local}$1`));
     fs.writeFileSync(p, JSON.stringify(data, null, 2) + "\n");
     console.log(`  ${p}`);
   };
@@ -121,7 +122,68 @@ async function main() {
       pancakeswap: `https://pancakeswap.finance/swap?inputCurrency=${d.collateral}&outputCurrency=${address}`,
     },
   };
-  const webPath = path.join(__dirname, "..", "web", "config.js");
+  // --- 4b. Phieu dien san cho DEX Screener Enhanced Token Info ---
+  // Sinh tu dia chi that de khong ai phai go tay dia chi hop dong vao form tra phi.
+  const dsSheet = `# DEX Screener — Enhanced Token Info
+
+Sinh tu dia chi da deploy. **Khong sua tay** — chay lai \`npm run assets:mainnet\`.
+
+Mua tai: https://marketplace.dexscreener.com/product/token-info
+
+> Dieu kien tien quyet: cap phai DA DUOC INDEX. Chay \`npm run ds:mainnet\` va
+> thay \`DA DUOC INDEX\` roi moi tra tien — goi nay gan thong tin vao mot trang
+> cap dang ton tai.
+
+## Cac o can dien
+
+| O | Gia tri |
+|---|---|
+| Chain | ${cfg.name} (chainId ${chainId}) |
+| Token address | \`${address}\` |
+| Pair address | ${d.pool ? `\`${ethers.getAddress(d.pool)}\`` : "chua co pool — chay npm run pool:mainnet"} |
+| Icon | \`brand/btcx-256.png\` (256x256) |
+| Header / banner | \`brand/btcx-banner-600x200.png\` (ty le 3:1) |
+| Website | ${site} |
+| Explorer | ${cfg.explorer}/token/${address} |
+
+## Mo ta — copy nguyen van
+
+BitcoinX (BTCx) is a BEP-20 token on BNB Smart Chain backed 1:1 by BTCB
+(Binance-Peg Bitcoin). Anyone can deposit BTCB to mint BTCx, or return BTCx to
+withdraw BTCB, at exactly 1:1 and permissionlessly, through the BitcoinXVault
+contract at ${vault}.
+
+BTCx is NOT Bitcoin. It is a wrapper certificate for BTCB, redeemable 1:1 at any
+time. Its price tracks Bitcoin because that redemption is always open to
+everyone, not because any oracle sets a price.
+
+The vault has no owner mint function, no blacklist and no transfer tax. Redeem
+has no pause path in the bytecode, and fees are hard-capped at 0.50%. Source is
+verified on BscScan and the reserve is publicly readable on-chain.
+
+## Social — dien it nhat mot kenh CO NGUOI TRA LOI
+
+- [ ] Telegram / Discord
+- [ ] X (Twitter)
+- [ ] GitHub: ${process.env.GITHUB_URL || "https://github.com/example/bitcoinx"}
+
+## Nhac truoc khi bam thanh toan
+
+- [ ] Chon goi **$299**, khong phai goi $499 (vuot ngan sach $500 sau gas + thanh khoan)
+- [ ] O mo ta co cau "BTCx is NOT Bitcoin" — day la thu giu ho so khong bi doc thanh mao danh
+- [ ] Website da song va hien dung so du tru
+- [ ] \`npm run ds:mainnet\` bao DA DUOC INDEX
+
+Sau khi tra tien: \`npm run ds:mainnet\` in trang thai don (processing / approved / rejected).
+`;
+  const dsPath = path.join(outDir, `dexscreener-submission${local}.md`);
+  fs.writeFileSync(dsPath, dsSheet);
+  console.log(`  ${dsPath}`);
+
+  // Chain cuc bo ghi sang config.local.js. Neu khong, mot lan chay thu se de dia
+  // chi Hardhat vao cau hinh that cua website va rat de bi commit nham.
+  const isLocal = Number(chainId) === 31337;
+  const webPath = path.join(__dirname, "..", "web", isLocal ? "config.local.js" : "config.js");
   fs.writeFileSync(
     webPath,
     "// SINH TU DONG boi scripts/06_make_listing_assets.ts — dung sua tay.\n" +
