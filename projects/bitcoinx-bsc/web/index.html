@@ -1,0 +1,461 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BitcoinX (BTCx) — token BSC bảo chứng 1:1 bởi BTCB</title>
+<meta name="description" content="BitcoinX (BTCx) is a BEP-20 token on BNB Smart Chain backed 1:1 by BTCB. Anyone can mint or redeem 1:1 through BitcoinXVault, permissionlessly. BTCx is not Bitcoin.">
+<link rel="icon" href="../brand/btcx-64.png">
+<meta property="og:title" content="BitcoinX (BTCx)">
+<meta property="og:description" content="Backed 1:1 by BTCB. Permissionless 1:1 redemption. BTCx is not Bitcoin.">
+<meta property="og:image" content="../brand/btcx-512.png">
+<style>
+:root{
+  --bg:#080d16; --panel:#0e1726; --panel-2:#121d30; --line:#1e2c45;
+  --ink:#e9f3ff; --muted:#8fa3bf; --teal:#29e0c8; --blue:#4c8dff;
+  --warn:#ffb648; --bad:#ff6b6b; --good:#29e0c8;
+  --mono:ui-monospace,SFMono-Regular,"SF Mono",Menlo,Consolas,monospace;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font:16px/1.65 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px;margin:0 auto;padding:0 20px}
+a{color:var(--blue);text-decoration:none}
+a:hover{text-decoration:underline}
+code,.mono{font-family:var(--mono);font-size:.9em}
+
+header{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,13,22,.92);backdrop-filter:blur(8px);z-index:10}
+.bar{display:flex;align-items:center;gap:12px;padding:14px 0}
+.bar img{width:38px;height:38px;border-radius:50%}
+.bar h1{font-size:19px;margin:0;letter-spacing:-.01em}
+.tick{font-family:var(--mono);font-size:12px;color:var(--teal);border:1px solid var(--line);
+  padding:2px 8px;border-radius:99px;background:var(--panel)}
+.spacer{flex:1}
+.lang{display:flex;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.lang button{background:var(--panel);color:var(--muted);border:0;padding:6px 11px;font:600 12px var(--mono);cursor:pointer}
+.lang button[aria-pressed="true"]{background:var(--blue);color:#06101f}
+
+section{padding:44px 0;border-bottom:1px solid var(--line)}
+h2{font-size:22px;margin:0 0 6px;letter-spacing:-.01em}
+h3{font-size:15px;margin:22px 0 8px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+p{margin:10px 0;color:#cfdcee}
+.lead{font-size:18px;color:var(--ink)}
+.sub{color:var(--muted);font-size:14px;margin-top:2px}
+
+.alert{border:1px solid #4a3a1a;background:#1d1708;border-radius:12px;padding:14px 16px;margin:20px 0}
+.alert strong{color:var(--warn)}
+
+.grid{display:grid;gap:14px;grid-template-columns:repeat(2,1fr);margin-top:18px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:16px}
+.card .k{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.07em}
+.card .v{font:600 24px/1.25 var(--mono);margin-top:7px;word-break:break-all}
+.card .v small{font-size:13px;color:var(--muted);font-weight:400}
+
+.addr{display:flex;align-items:center;gap:10px;background:var(--panel-2);border:1px solid var(--line);
+  border-radius:10px;padding:11px 13px;margin:8px 0;flex-wrap:wrap}
+.addr .lbl{font-size:12px;color:var(--muted);min-width:118px;text-transform:uppercase;letter-spacing:.06em}
+.addr .val{font-family:var(--mono);font-size:13px;flex:1;min-width:200px;word-break:break-all}
+.addr button{background:transparent;border:1px solid var(--line);color:var(--muted);border-radius:6px;
+  padding:4px 9px;font:600 11px var(--mono);cursor:pointer}
+.addr button:hover{color:var(--ink);border-color:var(--blue)}
+
+.flow{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;
+  font-family:var(--mono);font-size:12.5px;line-height:1.9;color:#bcd0e8;overflow-x:auto;white-space:pre}
+
+ol,ul{color:#cfdcee;padding-left:22px}
+li{margin:7px 0}
+.check li::marker{color:var(--teal)}
+.risk li::marker{color:var(--warn)}
+
+.pill{display:inline-block;font:600 12px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  padding:3px 10px;border-radius:99px;
+  border:1px solid var(--line);color:var(--muted)}
+.pill.ok{color:var(--good);border-color:#1d4d46}
+.pill.bad{color:var(--bad);border-color:#5c2727}
+
+.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.links a{background:var(--panel);border:1px solid var(--line);border-radius:9px;padding:9px 14px;
+  color:var(--ink);font-size:14px}
+.links a:hover{border-color:var(--blue);text-decoration:none}
+.links a[aria-disabled="true"]{opacity:.4;pointer-events:none}
+
+footer{padding:30px 0 50px;color:var(--muted);font-size:13px}
+[data-en]{display:none}
+html[lang="en"] [data-vi]{display:none}
+html[lang="en"] [data-en]{display:revert}
+@media(max-width:560px){
+  .bar h1{font-size:16px}
+  .bar .sub{font-size:11px;white-space:nowrap}
+  .tick{display:none}
+  .card .v{font-size:20px}
+  .grid{grid-template-columns:1fr}
+  .addr .lbl{min-width:0}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap bar">
+    <img src="../brand/btcx-256.png" alt="BitcoinX">
+    <div>
+      <h1>BitcoinX</h1>
+      <div class="sub mono">BTCx · BNB Smart Chain</div>
+    </div>
+    <span class="tick">BEP-20</span>
+    <div class="spacer"></div>
+    <div class="lang" role="group" aria-label="Language">
+      <button id="vi" aria-pressed="true">VI</button>
+      <button id="en" aria-pressed="false">EN</button>
+    </div>
+  </div>
+</header>
+
+<section>
+  <div class="wrap">
+    <p class="lead" data-vi>BitcoinX (BTCx) là token BEP-20 trên BNB Smart Chain, được bảo chứng <strong>1:1 bởi BTCB</strong> (Binance-Peg Bitcoin). Bất kỳ ai cũng nạp BTCB để mint BTCx, hoặc trả BTCx để rút BTCB, theo đúng tỉ lệ 1:1, không cần xin phép.</p>
+    <p class="lead" data-en>BitcoinX (BTCx) is a BEP-20 token on BNB Smart Chain backed <strong>1:1 by BTCB</strong> (Binance-Peg Bitcoin). Anyone can deposit BTCB to mint BTCx, or return BTCx to withdraw BTCB, at exactly 1:1, permissionlessly.</p>
+
+    <div class="alert">
+      <p style="margin:0" data-vi><strong>BTCx không phải Bitcoin.</strong> Đây là chứng chỉ bọc (wrapper) của BTCB, đổi lại được 1:1 tại hợp đồng <span class="mono">BitcoinXVault</span>. Giá BTCx bám theo giá Bitcoin vì đường đổi 1:1 này luôn mở cho tất cả mọi người — không phải vì có oracle nào đặt giá.</p>
+      <p style="margin:0" data-en><strong>BTCx is not Bitcoin.</strong> It is a wrapper certificate for BTCB, redeemable 1:1 at the <span class="mono">BitcoinXVault</span> contract. The price of BTCx tracks Bitcoin because that 1:1 redemption is always open to everyone — not because any oracle sets a price.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-vi>Bằng chứng dự trữ</h2>
+    <h2 data-en>Proof of reserve</h2>
+    <p class="sub" data-vi>Đọc trực tiếp từ BNB Smart Chain trong trình duyệt của bạn. Không qua máy chủ nào của chúng tôi.</p>
+    <p class="sub" data-en>Read directly from BNB Smart Chain in your browser. No server of ours in between.</p>
+
+    <div class="grid">
+      <div class="card">
+        <div class="k" data-vi>BTCB đang khoá</div>
+        <div class="k" data-en>BTCB locked</div>
+        <div class="v" id="locked">—</div>
+      </div>
+      <div class="card">
+        <div class="k" data-vi>BTCx lưu hành</div>
+        <div class="k" data-en>BTCx supply</div>
+        <div class="v" id="supply">—</div>
+      </div>
+      <div class="card">
+        <div class="k" data-vi>Độ bảo chứng</div>
+        <div class="k" data-en>Backing ratio</div>
+        <div class="v" id="backing">—</div>
+      </div>
+      <div class="card">
+        <div class="k" data-vi>Trạng thái</div>
+        <div class="k" data-en>Status</div>
+        <div class="v" id="status" style="font-size:15px">—</div>
+      </div>
+    </div>
+    <p class="sub" id="asof">—</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-vi>Địa chỉ hợp đồng</h2>
+    <h2 data-en>Contract addresses</h2>
+    <p class="sub" data-vi>Luôn đối chiếu địa chỉ ở đây trước khi giao dịch. Mã nguồn đã được verify công khai trên BscScan.</p>
+    <p class="sub" data-en>Always check addresses here before transacting. Source code is publicly verified on BscScan.</p>
+
+    <div class="addr"><span class="lbl">BTCx</span><span class="val" id="a-btcx">—</span><button data-copy="a-btcx">copy</button><a id="l-btcx" href="#" target="_blank" rel="noopener">BscScan</a></div>
+    <div class="addr"><span class="lbl">Vault</span><span class="val" id="a-vault">—</span><button data-copy="a-vault">copy</button><a id="l-vault" href="#" target="_blank" rel="noopener">BscScan</a></div>
+    <div class="addr"><span class="lbl">BTCB</span><span class="val" id="a-coll">—</span><button data-copy="a-coll">copy</button><a id="l-coll" href="#" target="_blank" rel="noopener">BscScan</a></div>
+    <div class="addr"><span class="lbl">Pool</span><span class="val" id="a-pool">—</span><button data-copy="a-pool">copy</button><a id="l-pool" href="#" target="_blank" rel="noopener">BscScan</a></div>
+
+    <p class="sub" data-vi>Decimals: 18 · Ký hiệu: BTCx · Tên: BitcoinX</p>
+    <p class="sub" data-en>Decimals: 18 · Symbol: BTCx · Name: BitcoinX</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-vi>Cơ chế hoạt động</h2>
+    <h2 data-en>How it works</h2>
+
+    <div class="flow">         <span data-vi>nạp BTCB</span><span data-en>deposit BTCB</span>                          <span data-vi>mint BTCx 1:1</span><span data-en>mint BTCx 1:1</span>
+  <span data-vi>Người dùng</span><span data-en>User      </span> ───────────────► BitcoinXVault ───────────────► BTCx
+         ◄─────────────── <span data-vi>rút BTCB</span><span data-en>withdraw</span>          ◄─────────── <span data-vi>burn BTCx 1:1</span><span data-en>burn BTCx 1:1</span>
+                    (<span data-vi>KHÔNG BAO GIỜ pause được</span><span data-en>NEVER PAUSABLE</span>)</div>
+
+    <p data-vi>Nếu giá BTCx trên sàn thấp hơn 1 BTCB, bất kỳ ai cũng có thể mua rẻ rồi redeem tại vault lấy đúng 1 BTCB — lệnh mua đó đẩy giá lên. Nếu cao hơn, họ mint tại vault rồi bán ra — lệnh bán đó kéo giá xuống. Đó là toàn bộ cơ chế neo giá.</p>
+    <p data-en>If BTCx trades below 1 BTCB, anyone can buy it cheap and redeem at the vault for exactly 1 BTCB — that buy pressure pushes the price up. If it trades above, they mint at the vault and sell — that sell pressure pulls it down. This arbitrage is the entire peg mechanism.</p>
+
+    <h3 data-vi>Chuỗi neo giá</h3>
+    <h3 data-en>Peg chain</h3>
+    <div class="flow">BTCx ──1:1 (<span data-vi>vault, on-chain, kiểm chứng được</span><span data-en>vault, on-chain, verifiable</span>)──► BTCB ──1:1 (Binance)──► BTC</div>
+    <p class="sub" data-vi>Mắt xích thứ hai do Binance vận hành và nằm ngoài tầm kiểm soát của dự án này.</p>
+    <p class="sub" data-en>The second link is operated by Binance and is outside this project's control.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-vi>Mint và redeem</h2>
+    <h2 data-en>Mint and redeem</h2>
+
+    <h3 data-vi>Mint — nạp BTCB nhận BTCx</h3>
+    <h3 data-en>Mint — deposit BTCB, receive BTCx</h3>
+    <ol>
+      <li data-vi>Mở hợp đồng <strong>BTCB</strong> trên BscScan → <code>approve(vault, amount)</code>.</li>
+      <li data-en>Open the <strong>BTCB</strong> contract on BscScan → <code>approve(vault, amount)</code>.</li>
+      <li data-vi>Mở <strong>Vault</strong> → <code>mint(collateralAmount, to)</code>.</li>
+      <li data-en>Open the <strong>Vault</strong> → <code>mint(collateralAmount, to)</code>.</li>
+      <li data-vi>Thêm địa chỉ BTCx vào ví để thấy số dư.</li>
+      <li data-en>Add the BTCx address to your wallet to see the balance.</li>
+    </ol>
+
+    <h3 data-vi>Redeem — trả BTCx rút BTCB</h3>
+    <h3 data-en>Redeem — return BTCx, withdraw BTCB</h3>
+    <ol>
+      <li data-vi>Mở <strong>Vault</strong> → <code>redeem(btcxAmount, to)</code>. Không cần approve.</li>
+      <li data-en>Open the <strong>Vault</strong> → <code>redeem(btcxAmount, to)</code>. No approval needed.</li>
+      <li data-vi>Đường này <strong>không thể bị chặn</strong> — hợp đồng không có hàm nào tạm dừng redeem.</li>
+      <li data-en>This path <strong>cannot be blocked</strong> — the contract has no function that pauses redemption.</li>
+    </ol>
+    <p class="sub" data-vi>Phí mint và phí redeem hiện tại hiển thị ở mục Trạng thái phía trên. Trần cứng trong bytecode là 0,50%.</p>
+    <p class="sub" data-en>Current mint and redeem fees are shown in the Status card above. The hard cap in bytecode is 0.50%.</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-vi>Đảm bảo ở mức bytecode</h2>
+    <h2 data-en>Guarantees at the bytecode level</h2>
+    <p class="sub" data-vi>Không phải lời hứa — đọc được trong mã nguồn đã verify.</p>
+    <p class="sub" data-en>Not promises — readable in the verified source.</p>
+    <ul class="check">
+      <li data-vi><code>redeem()</code> không có modifier pause. Không ai chặn được đường rút của bạn.</li>
+      <li data-en><code>redeem()</code> has no pause modifier. Nobody can block your exit.</li>
+      <li data-vi><code>sweep()</code> revert khi đụng vào collateral. Phần bảo chứng nằm ngoài tầm với của admin.</li>
+      <li data-en><code>sweep()</code> reverts on the collateral. The backing is out of admin reach.</li>
+      <li data-vi>Phí có trần cứng <code>MAX_FEE_BPS = 50</code> (0,50%). Owner không vượt được.</li>
+      <li data-en>Fees are hard-capped at <code>MAX_FEE_BPS = 50</code> (0.50%). The owner cannot exceed it.</li>
+      <li data-vi>Không có hàm mint cho owner. Nguồn cung chỉ đến từ tài sản thế chấp thật.</li>
+      <li data-en>No owner mint function. Supply comes only from real collateral.</li>
+      <li data-vi><code>BitcoinX.vault</code> là <code>immutable</code>. Quyền mint chưa từng nằm ở ví deployer.</li>
+      <li data-en><code>BitcoinX.vault</code> is <code>immutable</code>. Mint rights never sat with the deployer.</li>
+      <li data-vi>Không proxy, không nâng cấp được. Logic đã deploy là logic vĩnh viễn.</li>
+      <li data-en>No proxy, not upgradeable. Deployed logic is permanent logic.</li>
+      <li data-vi>Không blacklist, không pause transfer, không thuế mua/bán, không giới hạn ví.</li>
+      <li data-en>No blacklist, no transfer pause, no buy/sell tax, no wallet limits.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-vi>Rủi ro</h2>
+    <h2 data-en>Risks</h2>
+    <ul class="risk">
+      <li data-vi><strong>Rủi ro BTCB.</strong> BTCx neo vào BTCB, BTCB neo vào BTC bởi Binance. BTCB mất neo thì BTCx mất neo theo.</li>
+      <li data-en><strong>BTCB risk.</strong> BTCx pegs to BTCB, which Binance pegs to BTC. If BTCB depegs, BTCx follows.</li>
+      <li data-vi><strong>Chưa được audit.</strong> Có bộ test tự động phủ các bất biến chính, nhưng test không phải audit.</li>
+      <li data-en><strong>Not audited.</strong> An automated test suite covers the core invariants, but tests are not an audit.</li>
+      <li data-vi><strong>Thanh khoản mỏng.</strong> Pool trên DEX nhỏ; một lệnh lớn sẽ làm lệch giá đáng kể. Neo thật nằm ở vault, không ở pool.</li>
+      <li data-en><strong>Thin liquidity.</strong> The DEX pool is small; a large order moves the price substantially. The real peg is at the vault, not the pool.</li>
+      <li data-vi><strong>Rủi ro hợp đồng thông minh.</strong> Lỗi trong hợp đồng có thể khiến mất tài sản. Chỉ dùng số tiền bạn chấp nhận mất.</li>
+      <li data-en><strong>Smart contract risk.</strong> A bug could lead to loss of funds. Only use what you can afford to lose.</li>
+      <li data-vi><strong>Không phải lời khuyên đầu tư.</strong> Tài sản mã hoá không phải phương tiện thanh toán hợp pháp tại Việt Nam.</li>
+      <li data-en><strong>Not investment advice.</strong> No yield is promised and no price appreciation is implied.</li>
+    </ul>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <h2 data-vi>Liên kết</h2>
+    <h2 data-en>Links</h2>
+    <div class="links">
+      <a id="k-token" href="#" target="_blank" rel="noopener">BscScan — token</a>
+      <a id="k-vault" href="#" target="_blank" rel="noopener">BscScan — vault</a>
+      <a id="k-dex" href="#" target="_blank" rel="noopener">DexScreener</a>
+      <a id="k-cake" href="#" target="_blank" rel="noopener">PancakeSwap</a>
+      <a id="k-gh" href="#" target="_blank" rel="noopener">GitHub — <span data-vi>mã nguồn</span><span data-en>source</span></a>
+      <a href="../tokenlist/bitcoinx.tokenlist.json" target="_blank" rel="noopener">Token list JSON</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p data-vi>BitcoinX là chứng chỉ bọc BTCB. <strong>BTCx không phải Bitcoin</strong> và không liên kết với Bitcoin, Binance hay bất kỳ tổ chức nào khác.</p>
+    <p data-en>BitcoinX is a BTCB wrapper certificate. <strong>BTCx is not Bitcoin</strong> and is not affiliated with Bitcoin, Binance or any other entity.</p>
+  </div>
+</footer>
+
+<script>
+// ?local=1 nap cau hinh demo cuc bo (scripts/98_local_demo.ts) thay vi cau hinh that.
+document.write('<scr' + 'ipt src="config' +
+  (location.search.indexOf("local=1") > -1 ? ".local" : "") + '.js"><\/scr' + 'ipt>');
+</script>
+<script>
+(function () {
+  "use strict";
+  var C = window.BITCOINX_CONFIG || {};
+  var $ = function (id) { return document.getElementById(id); };
+
+  // ---------- Ngon ngu ----------
+  function setLang(l) {
+    document.documentElement.lang = l;
+    $("vi").setAttribute("aria-pressed", String(l === "vi"));
+    $("en").setAttribute("aria-pressed", String(l === "en"));
+    try { localStorage.setItem("btcx-lang", l); } catch (e) {}
+  }
+  $("vi").onclick = function () { setLang("vi"); };
+  $("en").onclick = function () { setLang("en"); };
+  var saved = null;
+  try { saved = localStorage.getItem("btcx-lang"); } catch (e) {}
+  setLang(saved === "en" ? "en" : "vi");
+
+  var vi = function () { return document.documentElement.lang !== "en"; };
+  var t = function (a, b) { return vi() ? a : b; };
+
+  // ---------- Dia chi ----------
+  function fill(id, linkId, addr, path) {
+    var el = $(id), ln = $(linkId);
+    if (!addr) { el.textContent = t("chưa triển khai", "not deployed yet"); if (ln) ln.style.display = "none"; return; }
+    el.textContent = addr;
+    el.title = addr;
+    if (ln) ln.href = C.explorer + "/" + path + "/" + addr;
+  }
+  function renderAddresses() {
+    fill("a-btcx", "l-btcx", C.btcx, "token");
+    fill("a-vault", "l-vault", C.vault, "address");
+    fill("a-coll", "l-coll", C.collateral, "token");
+    fill("a-pool", "l-pool", C.pool, "address");
+  }
+  renderAddresses();
+
+  Array.prototype.forEach.call(document.querySelectorAll("[data-copy]"), function (b) {
+    b.onclick = function () {
+      var v = $(b.getAttribute("data-copy")).textContent;
+      if (!v || v.indexOf("0x") !== 0) return;
+      navigator.clipboard.writeText(v).then(function () {
+        var old = b.textContent; b.textContent = "copied"; setTimeout(function () { b.textContent = old; }, 1200);
+      });
+    };
+  });
+
+  function setLink(id, href) {
+    var el = $(id);
+    if (!href) { el.setAttribute("aria-disabled", "true"); el.href = "#"; return; }
+    el.href = href;
+  }
+  setLink("k-token", C.btcx && C.explorer + "/token/" + C.btcx);
+  setLink("k-vault", C.vault && C.explorer + "/address/" + C.vault);
+  setLink("k-dex", (C.links && C.links.dexscreener) || (C.pool && "https://dexscreener.com/bsc/" + C.pool));
+  setLink("k-cake", (C.links && C.links.pancakeswap) ||
+    (C.btcx && "https://pancakeswap.finance/swap?inputCurrency=" + C.collateral + "&outputCurrency=" + C.btcx));
+  setLink("k-gh", C.links && C.links.github);
+
+  // ---------- Doc on-chain qua JSON-RPC, co du phong endpoint ----------
+  var SEL = {
+    totalSupply: "0x18160ddd",
+    balanceOf: "0x70a08231",
+    backingRatio: "0xc7c463fc",
+    mintPaused: "0x7e4831d3",
+    mintFeeBps: "0x97c8bcc1",
+    redeemFeeBps: "0x09f6442c"
+  };
+  var pad = function (a) { return "000000000000000000000000" + a.replace(/^0x/, "").toLowerCase(); };
+
+  function rpc(url, calls) {
+    var body = calls.map(function (c, i) {
+      return { jsonrpc: "2.0", id: i, method: "eth_call", params: [{ to: c.to, data: c.data }, "latest"] };
+    });
+    return fetch(url, {
+      method: "POST",
+      headers: { "content-type": "application/json" },
+      body: JSON.stringify(body)
+    }).then(function (r) {
+      if (!r.ok) throw new Error("HTTP " + r.status);
+      return r.json();
+    }).then(function (rows) {
+      if (!Array.isArray(rows)) throw new Error("bad response");
+      rows.sort(function (a, b) { return a.id - b.id; });
+      return rows.map(function (r) {
+        if (r.error || !r.result) throw new Error(r.error ? r.error.message : "empty");
+        return BigInt(r.result);
+      });
+    });
+  }
+
+  function fmt(x, dp) {
+    var s = (Number(x) / 1e18);
+    return s.toLocaleString(vi() ? "vi-VN" : "en-US", { minimumFractionDigits: dp, maximumFractionDigits: dp });
+  }
+
+  function render(v) {
+    $("locked").innerHTML = fmt(v.locked, 8) + ' <small>BTCB</small>';
+    $("supply").innerHTML = fmt(v.supply, 8) + ' <small>BTCx</small>';
+
+    var pct = v.supply === 0n ? 100 : Number(v.locked * 1000000n / v.supply) / 10000;
+    var ok = v.locked >= v.supply;
+    var pctStr = pct.toLocaleString(vi() ? "vi-VN" : "en-US",
+      { minimumFractionDigits: 4, maximumFractionDigits: 4 });
+    $("backing").innerHTML = pctStr + '% <small>' +
+      (ok ? t("đủ bảo chứng", "fully backed") : t("THIẾU", "UNDER-BACKED")) + '</small>';
+    $("backing").style.color = ok ? "var(--good)" : "var(--bad)";
+
+    var bits = [];
+    bits.push('<span class="pill ' + (v.paused ? "bad" : "ok") + '">mint ' +
+      (v.paused ? t("tạm dừng", "paused") : t("mở", "open")) + '</span>');
+    bits.push('<span class="pill ok">redeem ' + t("luôn mở", "always open") + '</span>');
+    bits.push('<span class="pill">' + t("phí", "fee") + ' ' +
+      (Number(v.mintFee) / 100) + '% / ' + (Number(v.redeemFee) / 100) + '%</span>');
+    $("status").innerHTML = bits.join(" ");
+
+    $("asof").textContent = t("Cập nhật lúc ", "Updated at ") + new Date().toLocaleString(vi() ? "vi-VN" : "en-US");
+  }
+
+  function load() {
+    if (!C.btcx || !C.vault) {
+      $("status").textContent = t("Chưa triển khai", "Not deployed yet");
+      $("asof").textContent = t(
+        "Số liệu sẽ hiện sau khi hợp đồng được deploy và web/config.js được sinh lại.",
+        "Figures appear once the contracts are deployed and web/config.js is regenerated."
+      );
+      return;
+    }
+    var calls = [
+      { to: C.collateral, data: SEL.balanceOf + pad(C.vault) },
+      { to: C.btcx, data: SEL.totalSupply },
+      { to: C.vault, data: SEL.mintPaused },
+      { to: C.vault, data: SEL.mintFeeBps },
+      { to: C.vault, data: SEL.redeemFeeBps }
+    ];
+
+    var urls = (C.rpcs || []).slice();
+    (function next() {
+      if (!urls.length) {
+        $("asof").textContent = t(
+          "Không kết nối được tới RPC công cộng. Kiểm tra trực tiếp trên BscScan.",
+          "Could not reach a public RPC. Verify directly on BscScan."
+        );
+        return;
+      }
+      rpc(urls.shift(), calls).then(function (r) {
+        render({ locked: r[0], supply: r[1], paused: r[2] !== 0n, mintFee: r[3], redeemFee: r[4] });
+      }).catch(next);
+    })();
+  }
+
+  function refresh() { renderAddresses(); load(); }
+  refresh();
+  setInterval(load, 60000);
+  $("vi").addEventListener("click", refresh);
+  $("en").addEventListener("click", refresh);
+})();
+</script>
+</body>
+</html>

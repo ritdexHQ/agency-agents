@@ -1,0 +1,61 @@
+# Mau workflow xuat ban website + logo + token list len GitHub Pages.
+#
+# File nay NAM NGOAI .github/workflows nen KHONG tu chay. De kich hoat:
+#   1. cp projects/bitcoinx-bsc/deploy/github-pages.yml .github/workflows/
+#   2. Trong repo: Settings -> Pages -> Source = GitHub Actions
+#   3. Chay `npm run assets:mainnet` va commit web/config.js da sinh
+#
+# Sau khi bat, dat LOGO_BASE_URL trong .env thanh:
+#   https://<user>.github.io/<repo>/brand
+# roi chay lai `npm run assets:mainnet` de token list tro dung URL logo that.
+
+name: Deploy BitcoinX site
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "projects/bitcoinx-bsc/web/**"
+      - "projects/bitcoinx-bsc/brand/**"
+      - "projects/bitcoinx-bsc/tokenlist/**"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Assemble site
+        run: |
+          mkdir -p site/brand site/tokenlist
+          cp projects/bitcoinx-bsc/web/index.html site/
+          cp projects/bitcoinx-bsc/web/config.js site/
+          cp projects/bitcoinx-bsc/brand/*.png projects/bitcoinx-bsc/brand/*.svg site/brand/
+          cp projects/bitcoinx-bsc/tokenlist/*.json site/tokenlist/ 2>/dev/null || true
+          # index.html tham chieu ../brand va ../tokenlist; o Pages no nam o goc.
+          sed -i 's#\.\./brand/#brand/#g; s#\.\./tokenlist/#tokenlist/#g' site/index.html
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

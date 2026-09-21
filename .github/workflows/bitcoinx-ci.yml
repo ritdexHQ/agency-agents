@@ -1,0 +1,87 @@
+name: BitcoinX contracts
+
+on:
+  # Push chi theo doi nhanh mac dinh. Nhanh cua PR da duoc trigger
+  # `pull_request` lo — de ca hai thi moi push chay job hai lan, ton gap doi
+  # phut Actions ma khong biet them dieu gi.
+  push:
+    branches: [main]
+    paths:
+      - "projects/bitcoinx-bsc/**"
+      - ".github/workflows/bitcoinx-ci.yml"
+  pull_request:
+    paths:
+      - "projects/bitcoinx-bsc/**"
+      - ".github/workflows/bitcoinx-ci.yml"
+
+# Push moi huy lan chay cu con dang do tren cung ref.
+concurrency:
+  group: bitcoinx-ci-${{ github.ref }}
+  cancel-in-progress: true
+
+defaults:
+  run:
+    working-directory: projects/bitcoinx-bsc
+
+jobs:
+  test:
+    name: Compile, typecheck and test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: projects/bitcoinx-bsc/package-lock.json
+
+      - run: npm ci
+
+      # hardhat.config.ts dung solc tu node_modules, khong tai binary ngoai,
+      # nen buoc nay chay duoc trong moi truong khong co egress tu do.
+      - name: Compile contracts
+        run: npm run build
+
+      - name: Typecheck scripts
+        run: npx tsc --noEmit -p tsconfig.json
+
+      - name: Run tests
+        run: npm test
+
+      - name: Gas and bytecode size report
+        run: npm run gas
+
+      # Logo la mot phan cua ho so listing. Kiem tra theo THUOC TINH chu khong
+      # so sanh tung byte: phien ban Pillow/zlib khac nhau cho ra byte khac nhau
+      # nhung anh van hop le.
+      - name: Regenerate and validate brand assets
+        run: |
+          python3 -m pip install --quiet pillow
+          npm run logo
+          python3 - <<'PY'
+          import os, sys
+          from PIL import Image
+          here = "brand"
+          ok = True
+          for size in (32, 64, 128, 200, 256, 512, 1024):
+              f = os.path.join(here, f"btcx-{size}.png")
+              im = Image.open(f)
+              if im.size != (size, size) or im.mode != "RGBA":
+                  print(f"FAIL {f}: {im.size} {im.mode}"); ok = False
+          logo = os.path.join(here, "logo.png")
+          im, n = Image.open(logo), os.path.getsize(logo)
+          # Trust Wallet: 256x256, duoi 100KB.
+          if im.size != (256, 256) or n >= 100_000:
+              print(f"FAIL {logo}: {im.size} {n} bytes"); ok = False
+          # DEX Screener Token Header: ty le 3:1, toi thieu 600px rong.
+          for bw, bh in ((600, 200), (1200, 400), (1800, 600)):
+              f = os.path.join(here, f"btcx-banner-{bw}x{bh}.png")
+              im = Image.open(f)
+              if im.size != (bw, bh) or im.width != im.height * 3 or im.width < 600:
+                  print(f"FAIL {f}: {im.size}"); ok = False
+          if not os.path.getsize(os.path.join(here, "btcx-logo.svg")):
+              print("FAIL btcx-logo.svg rong"); ok = False
+          print("brand assets OK" if ok else "brand assets INVALID")
+          sys.exit(0 if ok else 1)
+          PY

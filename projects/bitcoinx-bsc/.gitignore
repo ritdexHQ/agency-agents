@@ -1,0 +1,27 @@
+node_modules/
+artifacts/
+cache/
+typechain-types/
+coverage/
+coverage.json
+.env
+deployments/*.local.json
+
+# Lockfile duoc commit co chu dich: deploy hop dong can build tai lap duoc.
+!package-lock.json
+web/config.local.js
+
+# Nhat ky va trang thai cua bot giu neo — rieng cho tung may chay.
+keeper.log.jsonl
+keeper.state.json
+keeper.stop
+
+# Ha tang gia lap cho smoke test cuc bo.
+deployments/31337.json
+deployments/31337.infra.json
+
+# Ho so listing duoc sinh tu dia chi da deploy (scripts/06). Khong commit —
+# chung chua dia chi that hoac dia chi chain cuc bo tuy luc chay.
+tokenlist/*.json
+tokenlist/dexscreener-submission*.md
+web/config.local.js

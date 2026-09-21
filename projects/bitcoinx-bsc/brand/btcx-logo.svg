@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-label="BitcoinX">
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#FF9900"/>
+      <stop offset="100%" stop-color="#FF9900"/>
+    </radialGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="100%" stop-color="#FFFFFF"/>
+    </linearGradient>
+  </defs>
+  <circle cx="128" cy="128" r="128" fill="url(#bg)"/>
+  
+  <g fill="url(#mark)">
+    <text x="153.6" y="128" font-family="DejaVu Sans,Helvetica,Arial,sans-serif" font-weight="700"
+          font-size="154" text-anchor="middle" dominant-baseline="central">B</text>
+    <rect x="125.19999999999999" y="50.1" width="10.8" height="155.8" rx="5.4"/>
+    <rect x="149.79999999999998" y="50.1" width="10.8" height="155.8" rx="5.4"/>
+  </g>
+  
+</svg>
