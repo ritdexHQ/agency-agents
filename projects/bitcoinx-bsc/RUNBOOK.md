@@ -201,6 +201,16 @@ Script thoát mã `2` khi có cảnh báo. Ba tình huống:
 | `backingRatio` < 100% | **Dừng mọi thứ và điều tra.** Về lý thuyết không xảy ra được. |
 | Chainlink feed cũ > 1 giờ | Chỉ ảnh hưởng số hiển thị. Neo giá không phụ thuộc Chainlink. |
 
+Thay vì arbitrage bằng tay, chạy bot giữ neo — **mô phỏng trước**:
+
+```bash
+npm run keeper:mainnet                    # không gửi giao dịch nào
+KEEPER_EXECUTE=1 npm run keeper:mainnet   # chỉ khi "lai rong du kien" dương
+touch keeper.stop                         # dừng khẩn cấp
+```
+
+Chi tiết và cấu hình: [`docs/06-bot-giu-neo.md`](docs/06-bot-giu-neo.md).
+
 ---
 
 ## 9. Bàn giao quyền sở hữu (trong vòng 48 giờ)

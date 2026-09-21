@@ -17,6 +17,8 @@ export interface ChainConfig {
   v3Factory: string;
   v3PositionManager: string;
   v3SwapRouter: string;
+  /** QuoterV2 — bot giu neo dung de mo phong swap truoc khi gui lenh that. */
+  v3Quoter: string;
   /** Phi pool. 100 = 0.01% — tang thich hop nhat cho cap gan nhu 1:1. */
   poolFee: number;
   explorer: string;
@@ -31,6 +33,7 @@ export const CHAINS: Record<number, ChainConfig> = {
     v3Factory: "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
     v3PositionManager: "0x46A15B0b27311cedF172AB29E4f4766fbE7F4364",
     v3SwapRouter: "0x1b81D678ffb9C0263b24A97847620C99d213eB14",
+    v3Quoter: "0xB048Bbc1Ee6b733FFfCFb9e9CeF7375518e25997",
     poolFee: 100,
     explorer: "https://bscscan.com",
   },
@@ -44,13 +47,33 @@ export const CHAINS: Record<number, ChainConfig> = {
     v3Factory: "0x0BFbCF9fa4f9C56B0F40a671Ad40E0805A091865",
     v3PositionManager: "0x427bF5b37357632377eCbEC9de3626C71A5396c1",
     v3SwapRouter: "0x9a489505a00cE272eAa5e07Dba6491314CaE3796",
+    v3Quoter: "0xbC203d7f83677c7ed3F7acEc959963E7F4ECC5C2",
     poolFee: 100,
     explorer: "https://testnet.bscscan.com",
   },
 };
 
+/**
+ * Mang cuc bo cho smoke test. Dia chi duoc `scripts/98_local_demo.ts` ghi vao
+ * `deployments/31337.infra.json` moi lan chay, nen khong co gi hardcode o day.
+ */
+const LOCAL_CHAIN_ID = 31337;
+
 export function chainConfig(chainId: bigint | number): ChainConfig {
-  const cfg = CHAINS[Number(chainId)];
+  const id = Number(chainId);
+
+  if (id === LOCAL_CHAIN_ID) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const fs = require("fs") as typeof import("fs");
+    const path = require("path") as typeof import("path");
+    const file = path.join(__dirname, "..", "deployments", `${LOCAL_CHAIN_ID}.infra.json`);
+    if (!fs.existsSync(file)) {
+      throw new Error(`Chua co ${file}. Chay \`npm run demo:local\` truoc.`);
+    }
+    return JSON.parse(fs.readFileSync(file, "utf8")) as ChainConfig;
+  }
+
+  const cfg = CHAINS[id];
   if (!cfg) throw new Error(`Chua cau hinh cho chainId ${chainId}. Bo sung vao scripts/config.ts.`);
   return cfg;
 }

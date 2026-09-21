@@ -10,3 +10,12 @@ deployments/*.local.json
 # Lockfile duoc commit co chu dich: deploy hop dong can build tai lap duoc.
 !package-lock.json
 web/config.local.js
+
+# Nhat ky va trang thai cua bot giu neo — rieng cho tung may chay.
+keeper.log.jsonl
+keeper.state.json
+keeper.stop
+
+# Ha tang gia lap cho smoke test cuc bo.
+deployments/31337.json
+deployments/31337.infra.json

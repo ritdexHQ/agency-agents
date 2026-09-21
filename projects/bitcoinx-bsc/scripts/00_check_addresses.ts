@@ -74,6 +74,15 @@ async function main() {
 
   check("v3SwapRouter", await hasCode(cfg.v3SwapRouter), cfg.v3SwapRouter);
 
+  // 5. QuoterV2 phai tro ve cung factory — bot giu neo phu thuoc vao no.
+  const quoter = new ethers.Contract(cfg.v3Quoter, ["function factory() view returns (address)"], ethers.provider);
+  if (await hasCode(cfg.v3Quoter)) {
+    const f = await quoter.factory();
+    check("v3Quoter", f.toLowerCase() === cfg.v3Factory.toLowerCase(), `${cfg.v3Quoter} factory=${f}`);
+  } else {
+    check("v3Quoter", false, `${cfg.v3Quoter} — khong co bytecode`);
+  }
+
   console.log(
     failures === 0
       ? "\nTat ca dia chi hop le. Co the deploy.\n"

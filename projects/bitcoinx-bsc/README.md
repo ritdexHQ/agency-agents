@@ -100,8 +100,10 @@ npm run assets:mainnet   # sinh hồ sơ listing từ địa chỉ thật
 | `npm run pool:*` | Tạo pool PancakeSwap V3 + nạp thanh khoản |
 | `npm run lens:*` | Deploy `BTCxPriceLens` |
 | `npm run peg:*` | Giám sát độ lệch neo (thoát mã 2 khi có cảnh báo) |
+| `npm run keeper:*` | Bot giữ neo — arbitrage về 1:1. Mặc định mô phỏng; `KEEPER_EXECUTE=1` mới gửi lệnh thật |
 | `npm run assets:*` | Sinh token list + `info.json` Trust Wallet + hồ sơ nộp + `web/config.js` |
-| `npm run demo:local` | Dựng bản sao trên node Hardhat để xem trước website với số liệu on-chain thật |
+| `npm run demo:local` | Dựng bản sao đầy đủ (vault + pool + router giả lập) trên node Hardhat |
+| `npm run keeper:local` | Chạy thử bot giữ neo trên chain cục bộ, gồm cả nhánh gửi lệnh thật |
 
 ---
 
@@ -151,6 +153,7 @@ sách: [`docs/02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md).
 | [`03-ke-hoach-72-gio.md`](docs/03-ke-hoach-72-gio.md) | Lịch triển khai theo giờ, có cổng chặn |
 | [`04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md) | Ví lấy dữ liệu từ đâu và nộp hồ sơ ở đâu, theo thứ tự hiệu quả |
 | [`05-bao-mat-va-van-hanh.md`](docs/05-bao-mat-va-van-hanh.md) | Checklist bảo mật, xử lý quyền sở hữu, giám sát, giới hạn đã biết |
+| [`06-bot-giu-neo.md`](docs/06-bot-giu-neo.md) | Bot giữ neo: cơ chế, kinh tế thực tế, và vì sao bot tạo volume không có ở đây |
 | [`RUNBOOK.md`](RUNBOOK.md) | Trình tự triển khai copy-paste, có cổng chặn và bảng xử lý sự cố |
 
 ---
