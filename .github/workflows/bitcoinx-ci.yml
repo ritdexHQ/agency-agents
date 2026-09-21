@@ -1,7 +1,11 @@
 name: BitcoinX contracts
 
 on:
+  # Push chi theo doi nhanh mac dinh. Nhanh cua PR da duoc trigger
+  # `pull_request` lo — de ca hai thi moi push chay job hai lan, ton gap doi
+  # phut Actions ma khong biet them dieu gi.
   push:
+    branches: [main]
     paths:
       - "projects/bitcoinx-bsc/**"
       - ".github/workflows/bitcoinx-ci.yml"
@@ -9,6 +13,11 @@ on:
     paths:
       - "projects/bitcoinx-bsc/**"
       - ".github/workflows/bitcoinx-ci.yml"
+
+# Push moi huy lan chay cu con dang do tren cung ref.
+concurrency:
+  group: bitcoinx-ci-${{ github.ref }}
+  cancel-in-progress: true
 
 defaults:
   run:
