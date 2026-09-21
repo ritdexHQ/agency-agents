@@ -42,12 +42,12 @@ ví OKX" — ngày đó do OKX quyết định, không phải bạn.
 | 27–28 | Mint thử số rất nhỏ rồi redeem lại | Xác nhận đường rút thật sự mở |
 | 28–30 | Tạo pool + nạp thanh khoản | `LP_BTCB_TOTAL=0.002156 LP_BAND_BPS=100 npm run pool:mainnet` |
 | 30–31 | Deploy lens | `npm run lens:mainnet` |
-| 31–32 | Giao dịch swap đầu tiên (số nhỏ) để kích hoạt index | Qua PancakeSwap |
-| 32–33 | Kiểm tra DexScreener đã hiện cặp | `dexscreener.com/bsc/<pool>` |
+| 31–32 | Giao dịch đầu tiên để kích hoạt index | `BOOTSTRAP_EXECUTE=1 npm run bootstrap:mainnet` |
+| 32–33 | Kiểm tra DEX Screener đã hiện cặp | `npm run ds:mainnet` |
 | 33–34 | Sinh lại hồ sơ với địa chỉ mainnet thật | `npm run assets:mainnet` |
 | 34–36 | Nộp cập nhật thông tin token trên BscScan | Ký xác thực từ ví deployer |
-| 36–40 | Nộp CoinGecko + CoinMarketCap | Xem `04-logo-va-gia-tren-vi.md` |
-| 40–44 | Nộp OKX, DeBank/Rabby, PancakeSwap token list | " |
+| 36–38 | **Mua DEX Screener Enhanced Token Info** (nếu ngân sách cho phép) | ~$299, thường có logo dưới 15 phút |
+| 38–44 | Nộp DeBank (cho Rabby), OKX ticket, PancakeSwap token list | Xem `04-logo-va-gia-tren-vi.md` |
 | 44–46 | Bật giám sát neo giá định kỳ | Cron 5 phút, `npm run peg:mainnet` |
 | 46–48 | **Bàn giao quyền sở hữu vault** | Xem `05-bao-mat-va-van-hanh.md` |
 
@@ -85,13 +85,15 @@ làm `LOGO_BASE_URL`.
 
 Nói trước với mọi người liên quan, tránh hiểu nhầm về sau:
 
-- Logo trong ví OKX / Rabby / Trust Wallet — phụ thuộc xét duyệt bên thứ ba,
-  tính bằng tuần, và phần lớn còn kèm điều kiện thanh khoản/holder mà pool $175
-  chưa đạt.
-- Được CoinGecko / CoinMarketCap chấp nhận — 2–6 tuần và nhiều khả năng bị từ
-  chối ở mức thanh khoản này.
-- Logo trên DexScreener — cần gói trả phí ~$299, vượt ngân sách.
+- **Logo trên DEX Screener nếu giữ đúng ngân sách $200** — gói Enhanced Token
+  Info ~$299 vượt toàn bộ ngân sách, và sau khi bỏ CoinGecko thì không còn đường
+  miễn phí nào khác.
+- Logo trong ví OKX / Trust Wallet — phụ thuộc xét duyệt bên thứ ba, tính bằng
+  tuần, và Trust Wallet còn đòi 10.000 holder + 15.000 giao dịch + audit.
+- Thanh khoản đủ sâu để giữ neo chặt — ở $175, arbitrage chỉ có lãi khi giá lệch
+  quá ~3,7%.
 
 Cái **chắc chắn có** sau 72 giờ: một token sống, mã nguồn công khai, cơ chế neo
-1:1 kiểm chứng được, giá và biểu đồ hiện trên DexScreener, và toàn bộ hồ sơ đã
-nằm trong hàng đợi xét duyệt.
+1:1 kiểm chứng được, **giá và biểu đồ trên DEX Screener**, website bằng chứng dự
+trữ, và mọi hồ sơ miễn phí đã nộp. Thêm $299 thì có cả logo trên DEX Screener
+ngay trong ngày.

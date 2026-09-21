@@ -1,124 +1,133 @@
-# 04 — Làm sao logo và giá hiện lên trong ví
+# 04 — DEX Screener trước, ví sau
 
-## Ví lấy dữ liệu từ đâu (đây là điều quyết định mọi thứ)
-
-Không ví nào đọc hợp đồng của bạn để lấy logo hay giá. Chúng hỏi backend của
-chính chúng:
-
-| Ví | Nguồn logo | Nguồn giá |
-|---|---|---|
-| **OKX Wallet** | Cơ sở dữ liệu token của OKX; phần lớn đồng bộ từ CoinGecko/CMC | Bộ index DEX của OKX + CoinGecko/CMC |
-| **Rabby** | DeBank | DeBank |
-| **Trust Wallet** | Repo `trustwallet/assets` | CoinMarketCap / CoinGecko |
-| **MetaMask** | Token list + CoinGecko | CoinGecko |
-| **PancakeSwap** | `pancakeswap/token-list` | Chính pool on-chain |
-| **DexScreener** | Gói trả phí Enhanced Token Info | Tự index từ pool, miễn phí |
-
-**Kết luận thực tế: CoinGecko là đường găng.** Ba trong bốn ví bạn kể lấy logo
-hoặc giá từ CoinGecko, trực tiếp hoặc gián tiếp. Nếu chỉ làm được một việc, làm
-việc đó.
+> Bản này đã đổi ưu tiên theo quyết định bỏ qua CoinGecko và CoinMarketCap.
+> Hệ quả của quyết định đó được nói thẳng ở mục 2 — đọc trước khi tiêu tiền.
 
 ---
 
-## Thứ tự nộp hồ sơ (theo tỉ lệ hiệu quả trên công sức)
+## 1. DEX Screener hoạt động thế nào
 
-### 1. DexScreener — tự động, miễn phí, có ngay
+Hai thứ hoàn toàn tách biệt, rất hay bị gộp làm một:
 
-Không cần nộp gì. DexScreener index pool PancakeSwap V3 trong vài phút sau giao
-dịch đầu tiên. Ngay sau bước `npm run pool:mainnet` và một lệnh swap nhỏ, bạn đã
-có **giá + biểu đồ công khai** tại `dexscreener.com/bsc/<pool>`.
+| | Cách có được | Chi phí | Thời gian |
+|---|---|---|---|
+| **Giá + biểu đồ + cặp giao dịch** | Tự động, khi pool có thanh khoản **và ít nhất một giao dịch** | Miễn phí | Vài phút |
+| **Logo + website + social** | Token list được hỗ trợ (CoinGecko…) **hoặc** Enhanced Token Info trả phí | $0 hoặc ~$299 | Hàng tuần, hoặc dưới 15 phút |
 
-Logo/website/social trên trang cặp thuộc gói **Enhanced Token Info (~$299)** —
-ngoài ngân sách $200. Giá và điều khoản có thể đổi; kiểm tra marketplace trước
+Không có phí niêm yết, không có đơn xin duyệt, **không có ngưỡng thanh khoản tối
+thiểu** cho phần index tự động. Đây là điểm khác biệt lớn so với CoinGecko, và là
+lý do hướng DEX Screener hợp với ngân sách nhỏ.
+
+Điều kiện "ít nhất một giao dịch" là thứ hay bị bỏ sót: pool vừa tạo xong chưa có
+giao dịch nào thì cặp không xuất hiện. Đó là việc của `npm run bootstrap:mainnet`.
+
+---
+
+## 2. Bỏ CoinGecko thì logo chỉ còn một đường: trả $299
+
+DEX Screener lấy logo từ các token list được hỗ trợ — CoinGecko là nguồn chính.
+Gói **Enhanced Token Info** tồn tại đúng để đi vòng qua điều đó: nó cho hiển thị
+logo, website và social "bất kể tình trạng niêm yết trên dịch vụ bên thứ ba".
+
+Ghép hai điều đó lại:
+
+> **Bỏ CoinGecko + ngân sách $200 = có giá và biểu đồ trên DEX Screener, không có logo.**
+> Không có đường miễn phí nào khác. $299 lớn hơn toàn bộ ngân sách, nên đây không
+> phải lựa chọn trong $200 — đây là lý do để nâng ngân sách, hoặc chấp nhận không có logo.
+
+Và hệ quả thứ hai, với mục tiêu ban đầu là logo + giá trong ví OKX/Rabby:
+
+| Ví | Còn khả thi khi bỏ CoinGecko? |
+|---|---|
+| **Rabby** | Có — dữ liệu từ DeBank, nộp trực tiếp được, miễn phí |
+| **OKX Wallet** | Một phần — có kênh ticket trực tiếp, nhưng đường chính của họ là đồng bộ từ CoinGecko/CMC |
+| **Trust Wallet** | Không — vẫn đòi 10.000 holder + 15.000 giao dịch + audit |
+| **MetaMask** | Chỉ qua token list tự host, người dùng phải tự import |
+
+Nếu logo trong ví OKX là mục tiêu thật sự thì CoinGecko vẫn là đường ngắn nhất và
+miễn phí. Bỏ nó là đánh đổi có thật, không phải chỉ bớt một việc giấy tờ.
+
+---
+
+## 3. Thứ tự làm
+
+### Bước 1 — Có giá trên DEX Screener (miễn phí, cùng ngày)
+
+```bash
+npm run pool:mainnet                            # tạo pool + nạp thanh khoản
+BOOTSTRAP_EXECUTE=1 npm run bootstrap:mainnet   # một giao dịch để kích hoạt index
+npm run ds:mainnet                              # kiểm tra đã được index chưa
+```
+
+`bootstrap` chạy **đúng một lần** và tự từ chối nếu pool đã từng có giao dịch
+(kiểm tra `feeGrowthGlobal` on-chain, chỉ tăng khi có swap). Muốn chạy lần hai để
+"tạo vol" thì đó là wash trading — xem `06-bot-giu-neo.md`.
+
+`npm run ds:mainnet` đọc API công khai của DEX Screener và báo: đã index chưa,
+giá bao nhiêu, thanh khoản bao nhiêu, logo/website/social đã hiện chưa, và trạng
+thái đơn Enhanced Token Info nếu đã mua.
+
+### Bước 2 — Logo trên DEX Screener (~$299, dưới 15 phút)
+
+https://marketplace.dexscreener.com/product/token-info
+
+Chuẩn bị sẵn từ `tokenlist/submission.json` và `brand/`:
+
+- [ ] Địa chỉ hợp đồng dạng checksum
+- [ ] Logo PNG — dùng `brand/btcx-256.png`
+- [ ] Website sống — trang trong `web/`, xem `03-ke-hoach-72-gio.md`
+- [ ] Mô tả nêu rõ: bảo chứng 1:1 bởi BTCB, **không phải Bitcoin**, redeem được tại vault
+- [ ] Ít nhất một kênh social có người trả lời
+
+Giá và điều khoản đổi theo thời gian — mở đúng trang marketplace kiểm tra trước
 khi trả tiền.
 
-### 2. BscScan — cập nhật thông tin token, miễn phí
+### Bước 3 — Những nơi miễn phí còn lại
 
-Vào trang token → "Update Token Info". Cần ký xác thực từ ví deployer. Nộp logo
-(`brand/btcx-256.png`), website, mô tả, social.
+| # | Nơi | Chi phí | Được gì |
+|---|---|---|---|
+| 1 | BscScan — Update Token Info | miễn phí | Logo + mô tả trên trang token; ký xác thực từ ví deployer |
+| 2 | DeBank | miễn phí | **Dữ liệu token cho Rabby** |
+| 3 | OKX Web3 Wallet — ticket hỗ trợ | miễn phí | Kèm PNG 256×256, link explorer, link cặp giao dịch |
+| 4 | Token list tự host | miễn phí | Logo hiện **ngay** với người dùng chịu import |
+| 5 | PR vào `pancakeswap/token-list` | miễn phí | Có tiêu chí thanh khoản/tuổi dự án, nhiều khả năng chưa đạt |
 
-Vì sao đáng làm sớm: nhiều bộ index và người soát hồ sơ coi trang BscScan đã
-điền đủ là tín hiệu dự án nghiêm túc. Đây cũng là nơi người dùng vào kiểm tra đầu
-tiên.
-
-### 3. CoinGecko — miễn phí, 2–6 tuần, quan trọng nhất
-
-Nộp qua form "Request Form" chính thức. Chuẩn bị sẵn từ `tokenlist/submission.json`:
-
-- [ ] Địa chỉ hợp đồng dạng checksum + mã nguồn **đã verify**
-- [ ] Logo PNG 200×200 (`brand/btcx-200.png`)
-- [ ] Website sống, có tài liệu (xem checklist ở `03-ke-hoach-72-gio.md`)
-- [ ] Link cặp giao dịch trên PancakeSwap + DexScreener
-- [ ] Mô tả nêu rõ: bảo chứng 1:1 bởi BTCB, **không phải Bitcoin**, redeem được tại vault
-- [ ] Nguồn cung lưu hành và cách tính (ở đây: bằng đúng lượng BTCB đang khoá)
-
-**Nói trước:** CoinGecko đòi thanh khoản thật và dữ liệu thị trường kiểm chứng
-được. Với pool $175, khả năng bị từ chối là cao. Cứ nộp — hồ sơ bị từ chối vẫn
-cho bạn biết chính xác thiếu gì, và nộp lại được sau khi tăng thanh khoản.
-
-### 4. CoinMarketCap — miễn phí, chậm hơn
-
-Cùng bộ hồ sơ. Trust Wallet lấy giá từ CMC nên đây là bước bắc cầu.
-
-### 5. OKX Wallet
-
-Không có form một bước. Hai đường:
-
-- **Đường chính (gián tiếp):** được CoinGecko/CMC index → OKX đồng bộ về.
-- **Đường trực tiếp:** mở ticket hỗ trợ với đội OKX Web3 Wallet, gửi địa chỉ hợp
-  đồng, file logo (PNG 256×256 nền trong suốt), link explorer, link cặp giao dịch.
-
-Làm cả hai. Đường trực tiếp không tốn gì ngoài thời gian.
-
-### 6. Rabby / DeBank
-
-Rabby hiển thị theo dữ liệu token của DeBank. Gửi yêu cầu bổ sung logo/metadata
-token qua kênh hỗ trợ của DeBank, kèm đúng bộ thông tin như trên.
-
-### 7. PancakeSwap token list
-
-PR vào `pancakeswap/token-list`. Dùng `tokenlist/bitcoinx.tokenlist.json` đã sinh
-sẵn. Họ có tiêu chí về thanh khoản và độ tuổi dự án — nhiều khả năng chưa đạt
-ngay, nhưng PR là miễn phí.
-
-### 8. Trust Wallet — chưa đủ điều kiện, đừng mất thời gian lúc này
-
-Yêu cầu hiện hành: **tối thiểu 10.000 holder, 15.000 giao dịch, và một bản audit
-bảo mật đầy đủ từ đơn vị uy tín**. Không có đường tắt. `tokenlist/trustwallet-info.json`
-và `brand/logo.png` (256×256, dưới 100KB) đã sinh sẵn để dùng khi nào đủ điều kiện.
+Token list tự host: đặt `LOGO_BASE_URL` trỏ tới GitHub Pages, chạy lại
+`npm run assets:mainnet`, rồi hướng dẫn người dùng thêm URL vào phần
+"Import token list" của ví.
 
 ---
 
-## Đường tắt luôn dùng được: tự host token list
+## 4. Boosts — không dùng ở giai đoạn này
 
-Không cần ai duyệt. Token list theo chuẩn Uniswap được MetaMask, Rabby,
-PancakeSwap và nhiều ví khác import thủ công:
+DEX Screener bán **Boosts** ($100–$1.500 tuỳ gói) để nhân điểm trending. Ba lý do
+không nên mua lúc này:
 
-1. Host `tokenlist/bitcoinx.tokenlist.json` và thư mục `brand/` trên GitHub Pages.
-2. Đặt `LOGO_BASE_URL` trong `.env` trỏ tới đó, chạy lại `npm run assets:mainnet`.
-3. Hướng dẫn người dùng thêm URL đó vào phần "Import token list" của ví.
+1. Boosts nhân điểm trending hiện có; token có nền tảng yếu không vì thế mà lên #1.
+2. Nó mua **lượt xem**, không mua logo. Trang được nhiều người xem hơn mà vẫn
+   không có logo và không có mô tả thì phản tác dụng.
+3. Với pool $175, lưu lượng đổ vào sẽ gặp một sổ lệnh mà một lệnh vài trăm đô đã
+   quét sạch. Đó là cách nhanh nhất để mất uy tín.
 
-Cách này cho logo hiện lên **ngay lập tức** với người dùng chịu import. Không
-thay thế được listing chính thức, nhưng dùng được trong lúc chờ.
+Thứ tự đúng: **có giá → có logo và mô tả → có thanh khoản thật → rồi mới nghĩ đến
+lượt xem.**
 
 ---
 
-## Thông số logo — đã sinh đủ trong `brand/`
+## 5. Kiểm tra liên tục
 
-| File | Dùng ở đâu |
-|---|---|
-| `btcx-32.png` | Token list, icon nhỏ trong ví |
-| `btcx-128.png` | OKX (một số nơi yêu cầu 128×128) |
-| `btcx-200.png` | CoinGecko, CoinMarketCap |
-| `btcx-256.png` / `logo.png` | Trust Wallet (đúng tên `logo.png`, dưới 100KB), OKX |
-| `btcx-512.png`, `btcx-1024.png` | Website, ảnh mạng xã hội |
-| `btcx-logo.svg` | Vector cho website và tài liệu |
+```bash
+npm run ds:mainnet     # thoát mã 2 nếu cặp chưa được index
+```
 
-Sinh lại bất cứ lúc nào: `npm run logo`.
+Đặt cron mỗi giờ trong 72 giờ đầu. Script báo chính xác còn thiếu gì: logo, social,
+thanh khoản quá mỏng, hay không có giao dịch nào trong 24h.
 
-**Đừng sửa logo cho giống Bitcoin hơn.** Nền navy và gradient teal–xanh là cố ý.
-Một logo bắt chước tròn cam chữ B nghiêng sẽ bị gắn cờ mạo danh ở đúng những nơi
-bạn đang xin duyệt — và đó là kiểu từ chối rất khó gỡ về sau.
+> Ghi chú về kiểm chứng: API DEX Screener bị chặn trong môi trường phát triển của
+> repo này nên script `08_dexscreener_check.ts` **chưa được chạy đối chiếu với dữ
+> liệu thật**. Nó xử lý được mọi trường hợp thiếu trường, và in nguyên lỗi khi
+> API trả về khác dự kiến. Lần chạy đầu trên máy bạn, đối chiếu với trang web
+> DEX Screener một lượt.
 
 ---
 
@@ -126,10 +135,9 @@ bạn đang xin duyệt — và đó là kiểu từ chối rất khó gỡ về
 
 - [DEX Screener — Token Listing docs](https://docs.dexscreener.com/token-listing)
 - [DEX Screener Marketplace — Enhanced Token Info](https://marketplace.dexscreener.com/product/token-info)
-- [CoinGecko — How to List a New Cryptocurrency](https://support.coingecko.com/hc/en-us/articles/7291312302617-How-to-List-a-New-Cryptocurrency-on-CoinGecko)
-- [Trust Wallet — Listing requirements](https://developer.trustwallet.com/developer/listing-new-assets/requirements)
-- [Trust Wallet — Repository details (info.json, logo.png)](https://developer.trustwallet.com/developer/listing-new-assets/repository_details)
-- [trustwallet/assets](https://github.com/trustwallet/assets)
+- [DEX Screener — Boosting docs](https://docs.dexscreener.com/boosting)
+- [DEX Screener — cập nhật thông tin token (help)](https://help.dexscreener.com/en/articles/1147201)
+- [Trust Wallet — điều kiện niêm yết](https://developer.trustwallet.com/developer/listing-new-assets/requirements)
 - [OKX — Token Listing Application](https://www.okx.com/en-us/token-listing-apply)
 
 Chính sách và mức phí của các bên này thay đổi thường xuyên. Mở đúng trang gốc

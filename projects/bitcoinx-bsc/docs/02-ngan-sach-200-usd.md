@@ -77,14 +77,40 @@ trong mọi trường hợp.
 
 ## Nói thẳng: $175 thanh khoản nghĩa là gì
 
-- **Đủ để** DexScreener và các bộ index DEX nhìn thấy cặp giao dịch và hiển thị
-  giá + biểu đồ. Việc này tự động và miễn phí.
+- **Đủ để** DEX Screener index cặp và hiển thị giá + biểu đồ. Tự động, miễn phí,
+  **không có ngưỡng thanh khoản tối thiểu** — chỉ cần pool có thanh khoản và ít
+  nhất một giao dịch.
 - **Đủ để** chứng minh cơ chế chạy đúng: ai cũng kiểm tra được mint/redeem 1:1.
-- **Không đủ để** CoinGecko/CoinMarketCap chấp nhận. Họ đòi thanh khoản thật và
-  dữ liệu thị trường kiểm chứng được. Một pool $175 gần như chắc chắn bị loại.
 - **Không đủ để** chống một cú swap $500 — lệnh đó sẽ quét hết dải và làm giá pool
-  lệch xa 1:1 cho tới khi có người arbitrage về. Đó là lý do phải chạy
-  `npm run peg:mainnet` thường xuyên trong 72 giờ đầu.
+  lệch xa 1:1. Và ở độ sâu này **không ai arbitrage về có lãi dưới mức lệch ~3,7%**
+  (tính toán trong `06-bot-giu-neo.md`). Neo thật nằm ở vault, không ở pool.
+- **Không mua được logo trên DEX Screener.** Xem ngay dưới đây.
+
+---
+
+## Quyết định $299: mua logo DEX Screener hay không
+
+Đã bỏ CoinGecko và CoinMarketCap khỏi kế hoạch. DEX Screener lấy logo từ token
+list được hỗ trợ (CoinGecko là nguồn chính) **hoặc** từ gói Enhanced Token Info
+trả phí. Bỏ nguồn thứ nhất thì chỉ còn nguồn thứ hai.
+
+| | Ngân sách $200 | Ngân sách $500 |
+|---|---|---|
+| BNB gas | $15 | $15 |
+| Thanh khoản pool | $175 | $175 |
+| Enhanced Token Info | — | $299 |
+| Dự phòng | $10 | $11 |
+| **Giá + biểu đồ trên DEX Screener** | Có | Có |
+| **Logo + website + social trên DEX Screener** | **Không** | Có, thường dưới 15 phút sau khi trả |
+
+**$299 lớn hơn toàn bộ ngân sách $200**, nên đây không phải chuyện cắt giảm chỗ
+khác để bù. Không thể hạ thanh khoản xuống để lấy tiền mua logo — bỏ hết $175
+vào đó vẫn thiếu. Hai lựa chọn thật sự là: chấp nhận không có logo, hoặc nâng
+ngân sách lên khoảng $500.
+
+Khuyến nghị: **nâng lên $500.** Trong tất cả các khoản chi có thể, $299 này là
+khoản duy nhất mua được một kết quả hiển thị chắc chắn, không qua hàng đợi xét
+duyệt, trong vòng 15 phút. Mọi thứ khác đều là hàng đợi hoặc là điều kiện về quy mô.
 
 ---
 
@@ -92,10 +118,13 @@ trong mọi trường hợp.
 
 | Thêm | Chi phí | Mở ra điều gì |
 |---|---:|---|
-| DexScreener Enhanced Token Info | ~$299 | Logo + website + social hiện trên trang cặp. **Cách rẻ nhất để có logo ở một nơi đông người xem.** Giá có thể đổi — kiểm tra marketplace trước khi trả. |
-| Nâng thanh khoản lên $2.000–5.000 | +$2.000–5.000 | Mức tối thiểu để hồ sơ CoinGecko/CMC có cửa được xét nghiêm túc. Đây mới là chìa khoá cho logo+giá trong OKX/Rabby. |
+| DEX Screener Enhanced Token Info | ~$299 | Logo + website + social trên trang cặp, dưới 15 phút, không cần CoinGecko. **Ưu tiên số một khi đã bỏ CoinGecko.** |
+| Nâng thanh khoản lên ~$2.400 | +$2.200 | Ngưỡng để arbitrage giữ neo trong vòng 1% có lãi — tức là neo giá mới thật sự chặt. Con số này tính ra ở `06-bot-giu-neo.md`. |
 | Audit bảo mật | $5.000–15.000 | Điều kiện bắt buộc của Trust Wallet, và là thứ duy nhất khiến người lạ dám bỏ tiền thật vào vault. |
 
-Nếu chỉ có đúng $200: làm xong phần kỹ thuật, đưa giá lên DexScreener, nộp hết
-hồ sơ miễn phí, rồi dùng kết quả đó để quyết định có rót thêm hay không. Đừng
-tiêu $200 theo cách khiến bạn không làm tiếp được.
+Không khuyến nghị mua **Boosts** ($100–$1.500) ở giai đoạn này: nó mua lượt xem
+chứ không mua logo, và đổ lưu lượng vào một pool $175 là cách nhanh nhất để mất
+uy tín. Xem `04-logo-va-gia-tren-vi.md`.
+
+Nếu giữ đúng $200: làm xong phần kỹ thuật, đưa giá lên DEX Screener, nộp hết các
+nơi miễn phí, rồi dùng kết quả đó để quyết định có rót thêm hay không.

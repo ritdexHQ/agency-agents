@@ -26,7 +26,12 @@
     "demo:local": "hardhat run scripts/98_local_demo.ts --network localhost",
     "keeper:mainnet": "hardhat run scripts/07_peg_keeper.ts --network bsc",
     "keeper:testnet": "hardhat run scripts/07_peg_keeper.ts --network bscTestnet",
-    "keeper:local": "hardhat run scripts/07_peg_keeper.ts --network localhost"
+    "keeper:local": "hardhat run scripts/07_peg_keeper.ts --network localhost",
+    "ds:mainnet": "hardhat run scripts/08_dexscreener_check.ts --network bsc",
+    "ds:testnet": "hardhat run scripts/08_dexscreener_check.ts --network bscTestnet",
+    "bootstrap:mainnet": "hardhat run scripts/09_bootstrap_trade.ts --network bsc",
+    "bootstrap:testnet": "hardhat run scripts/09_bootstrap_trade.ts --network bscTestnet",
+    "bootstrap:local": "hardhat run scripts/09_bootstrap_trade.ts --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",

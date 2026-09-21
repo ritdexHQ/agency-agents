@@ -21,6 +21,11 @@ contract MockCpmmPool {
     address public immutable token1;
     uint24 public immutable fee; // bps * 100, giong V3 (100 = 0,01%)
 
+    // Chi tang khi co swap — nap thanh khoan thi khong. Day la cach
+    // scripts/09_bootstrap_trade.ts biet pool da tung duoc giao dich hay chua.
+    uint256 public feeGrowthGlobal0X128;
+    uint256 public feeGrowthGlobal1X128;
+
     error UnknownToken();
 
     constructor(address tokenA, address tokenB, uint24 fee_) {
@@ -69,6 +74,10 @@ contract MockCpmmPool {
         address tokenOut = tokenIn == token0 ? token1 : token0;
         IERC20(tokenIn).safeTransferFrom(msg.sender, address(this), amountIn);
         IERC20(tokenOut).safeTransfer(to, amountOut);
+
+        uint256 feeAmount = (amountIn * fee) / 1_000_000 + 1;
+        if (tokenIn == token0) feeGrowthGlobal0X128 += feeAmount;
+        else feeGrowthGlobal1X128 += feeAmount;
     }
 
     function _sqrtPriceX96(uint256 r0, uint256 r1) private pure returns (uint256) {

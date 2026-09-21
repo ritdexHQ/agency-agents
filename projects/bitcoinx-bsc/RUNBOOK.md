@@ -128,13 +128,18 @@ khởi tạo đúng tại 1:1, rồi nạp thanh khoản tập trung trong dải
 Kỳ vọng: in ra địa chỉ pool và số `Position NFT #`. Nếu pool đã tồn tại và giá
 lệch ngoài dải, script dừng và bảo bạn arbitrage về 1:1 trước — làm đúng như vậy.
 
-Thực hiện **một lệnh swap nhỏ** trên PancakeSwap để kích hoạt các bộ index.
-Vài phút sau, kiểm tra:
+Bây giờ kích hoạt các bộ index — DEX Screener chỉ hiện cặp khi pool có thanh
+khoản **và ít nhất một giao dịch**:
 
+```bash
+npm run bootstrap:mainnet                       # mô phỏng trước
+BOOTSTRAP_EXECUTE=1 npm run bootstrap:mainnet   # một lệnh swap nhỏ, thật
+npm run ds:mainnet                              # kiểm tra đã index chưa
 ```
-https://dexscreener.com/bsc/<địa chỉ pool>
-```
-Kỳ vọng: có giá và biểu đồ. **Đây là mốc "token đã có giá công khai".**
+
+`bootstrap` chạy **đúng một lần** và tự từ chối nếu pool đã từng có giao dịch.
+Kỳ vọng: vài phút sau `ds:mainnet` báo `DA DUOC INDEX` kèm giá và thanh khoản.
+**Đây là mốc "token đã có giá công khai".**
 
 ---
 
@@ -170,18 +175,25 @@ khoá, đọc trực tiếp từ BSC trong trình duyệt.
 
 ---
 
-## 7. Nộp hồ sơ (theo thứ tự này)
+## 7. Logo và hồ sơ
 
-| # | Nơi | Chi phí | Thời gian | Ghi chú |
+Đã bỏ CoinGecko/CMC, nên trên DEX Screener chỉ còn một đường có logo: gói trả phí.
+
+| # | Nơi | Chi phí | Thời gian | Được gì |
 |---|---|---|---|---|
-| 1 | BscScan — Update Token Info | miễn phí | vài ngày | Ký xác thực từ ví deployer |
-| 2 | CoinGecko | miễn phí | 2–6 tuần | **Quan trọng nhất** — hầu hết ví lấy giá/logo từ đây |
-| 3 | CoinMarketCap | miễn phí | chậm hơn | Trust Wallet lấy giá từ CMC |
+| 1 | **DEX Screener — Enhanced Token Info** | ~$299 | thường < 15 phút | **Logo + website + social trên trang cặp** |
+| 2 | BscScan — Update Token Info | miễn phí | vài ngày | Logo + mô tả trên trang token; ký xác thực từ ví deployer |
+| 3 | DeBank | miễn phí | vài tuần | Dữ liệu token cho **Rabby** |
 | 4 | OKX Web3 Wallet — ticket hỗ trợ | miễn phí | vài tuần | Kèm PNG 256×256 |
-| 5 | DeBank (cho Rabby) | miễn phí | vài tuần | |
+| 5 | Token list tự host | miễn phí | ngay lập tức | Logo cho người dùng chịu import |
 | 6 | PR vào `pancakeswap/token-list` | miễn phí | — | Dùng file tokenlist đã sinh |
 
-Chi tiết từng form: [`docs/04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md).
+**Điều kiện dừng:** $299 vượt toàn bộ ngân sách $200. Nếu không nâng ngân sách
+thì bỏ qua mục 1 — token vẫn có giá và biểu đồ, chỉ không có logo trên DEX Screener.
+
+Không mua Boosts ở giai đoạn này: nó mua lượt xem chứ không mua logo.
+
+Chi tiết: [`docs/04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md).
 
 Chưa nộp Trust Wallet — họ đòi 10.000 holder + 15.000 giao dịch + audit.
 
@@ -240,4 +252,6 @@ rút được collateral, **không** chặn được redeem, **không** đặt p
 | `verify` FAIL khác | Thiếu `BSCSCAN_API_KEY`, hoặc sai tham số constructor |
 | `pool:mainnet` dừng vì lệch dải | Giá pool đã trôi — arbitrage về 1:1 rồi chạy lại |
 | Website hiện "không kết nối được RPC" | RPC công cộng chặn; thêm endpoint vào `rpcs` trong `web/config.js` |
-| DexScreener chưa thấy cặp | Chưa có giao dịch nào — thực hiện một swap nhỏ |
+| DEX Screener chưa thấy cặp | Chưa có giao dịch nào — chạy `BOOTSTRAP_EXECUTE=1 npm run bootstrap:mainnet` |
+| `ds:mainnet` báo chưa có logo | Bình thường khi chưa mua Enhanced Token Info — không có đường miễn phí sau khi bỏ CoinGecko |
+| `bootstrap` từ chối chạy | Pool đã từng có giao dịch. Đúng như thiết kế — chạy `npm run ds:mainnet` để xem trạng thái |

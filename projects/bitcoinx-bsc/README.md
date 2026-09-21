@@ -27,10 +27,12 @@ Với ngân sách **$200 / 72 giờ**, đây là ranh giới trung thực:
 
 | | |
 |---|---|
-| ✅ Làm được | Token sống, verify mã nguồn, neo 1:1 chạy thật, pool có giá, **giá + biểu đồ trên DexScreener**, toàn bộ hồ sơ đã nộp |
-| ❌ Không làm được trong 72 giờ | Logo trên DexScreener (gói $299), logo+giá trong OKX/Rabby (xét duyệt hàng tuần), Trust Wallet (đòi 10.000 holder + 15.000 giao dịch + audit) |
+| ✅ Làm được | Token sống, verify mã nguồn, neo 1:1 chạy thật, **giá + biểu đồ trên DEX Screener** (tự động, miễn phí, vài phút), website bằng chứng dự trữ, mọi hồ sơ miễn phí đã nộp |
+| ❌ Không làm được với đúng $200 | **Logo trên DEX Screener** — gói Enhanced Token Info ~$299 vượt toàn bộ ngân sách, và sau khi bỏ CoinGecko thì không còn đường miễn phí nào |
+| ❌ Không làm được trong 72 giờ | Logo trong ví OKX / Trust Wallet (xét duyệt hàng tuần; Trust Wallet đòi 10.000 holder + 15.000 giao dịch + audit) |
 
-Chi tiết và số liệu: **[`docs/00-su-that-can-biet-truoc.md`](docs/00-su-that-can-biet-truoc.md)**.
+Chi tiết và số liệu: **[`docs/00-su-that-can-biet-truoc.md`](docs/00-su-that-can-biet-truoc.md)** ·
+Hướng DEX Screener: **[`docs/04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md)**.
 
 Sẵn sàng triển khai: **[`RUNBOOK.md`](RUNBOOK.md)** — từng lệnh, kết quả mong
 đợi, và điều kiện dừng ở mỗi bước.
@@ -67,7 +69,7 @@ Chi tiết: [`docs/01-kien-truc-neo-gia.md`](docs/01-kien-truc-neo-gia.md).
 
 ```bash
 npm ci
-npm test                 # 30 test, phủ các bất biến chính
+npm test                 # 54 test, phủ bất biến hợp đồng + logic bot giữ neo
 npm run logo             # sinh bộ logo vào brand/
 cp .env.example .env     # điền khoá + RPC + API key
 ```
@@ -86,7 +88,9 @@ npm run peg:testnet      # xem độ lệch neo
 npm run check:mainnet && npm run deploy:mainnet && npm run verify:mainnet
 LP_BTCB_TOTAL=0.002156 LP_BAND_BPS=100 npm run pool:mainnet
 npm run lens:mainnet
-npm run assets:mainnet   # sinh hồ sơ listing từ địa chỉ thật
+BOOTSTRAP_EXECUTE=1 npm run bootstrap:mainnet   # kích hoạt index DEX Screener
+npm run ds:mainnet                              # kiểm tra đã có giá chưa
+npm run assets:mainnet                          # sinh hồ sơ listing từ địa chỉ thật
 ```
 
 | Lệnh | Việc |
@@ -100,6 +104,8 @@ npm run assets:mainnet   # sinh hồ sơ listing từ địa chỉ thật
 | `npm run pool:*` | Tạo pool PancakeSwap V3 + nạp thanh khoản |
 | `npm run lens:*` | Deploy `BTCxPriceLens` |
 | `npm run peg:*` | Giám sát độ lệch neo (thoát mã 2 khi có cảnh báo) |
+| `npm run bootstrap:*` | Một giao dịch swap để kích hoạt index DEX Screener. Chạy đúng một lần, tự từ chối lần sau |
+| `npm run ds:*` | Báo cáo tình trạng trên DEX Screener: đã index chưa, giá, thanh khoản, logo, đơn đã mua |
 | `npm run keeper:*` | Bot giữ neo — arbitrage về 1:1. Mặc định mô phỏng; `KEEPER_EXECUTE=1` mới gửi lệnh thật |
 | `npm run assets:*` | Sinh token list + `info.json` Trust Wallet + hồ sơ nộp + `web/config.js` |
 | `npm run demo:local` | Dựng bản sao đầy đủ (vault + pool + router giả lập) trên node Hardhat |
@@ -136,7 +142,12 @@ Giá tham chiếu on-chain ngày 20/09/2026: BTC ≈ $81.178, BNB ≈ $762,43.
 | Dự phòng | $10 |
 
 Toàn bộ chi phí triển khai on-chain vào khoảng **$0,67 ở 0,1 gwei**, hoặc
-**$20 ở 3 gwei**. Gas không phải vấn đề — thanh khoản mới là.
+**$20 ở 3 gwei**. Gas không phải vấn đề.
+
+Khoản phải quyết định riêng: **DEX Screener Enhanced Token Info ~$299** — đường
+duy nhất còn lại để có logo trên DEX Screener sau khi bỏ CoinGecko. Nó lớn hơn
+toàn bộ ngân sách $200, nên không cắt chỗ khác bù được. Hoặc chấp nhận có giá mà
+không có logo, hoặc nâng ngân sách lên khoảng $500.
 
 Bảng phân bổ đầy đủ, so sánh độ sâu V2 vs V3, và thứ tự ưu tiên khi nâng ngân
 sách: [`docs/02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md).
@@ -151,7 +162,7 @@ sách: [`docs/02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md).
 | [`01-kien-truc-neo-gia.md`](docs/01-kien-truc-neo-gia.md) | Cơ chế neo giá và lý do từng quyết định thiết kế |
 | [`02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md) | Gas đo thật, phân bổ vốn, độ sâu thanh khoản |
 | [`03-ke-hoach-72-gio.md`](docs/03-ke-hoach-72-gio.md) | Lịch triển khai theo giờ, có cổng chặn |
-| [`04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md) | Ví lấy dữ liệu từ đâu và nộp hồ sơ ở đâu, theo thứ tự hiệu quả |
+| [`04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md) | **DEX Screener trước, ví sau** — index tự động, gói logo $299, và hệ quả của việc bỏ CoinGecko |
 | [`05-bao-mat-va-van-hanh.md`](docs/05-bao-mat-va-van-hanh.md) | Checklist bảo mật, xử lý quyền sở hữu, giám sát, giới hạn đã biết |
 | [`06-bot-giu-neo.md`](docs/06-bot-giu-neo.md) | Bot giữ neo: cơ chế, kinh tế thực tế, và vì sao bot tạo volume không có ở đây |
 | [`RUNBOOK.md`](RUNBOOK.md) | Trình tự triển khai copy-paste, có cổng chặn và bảng xử lý sự cố |
