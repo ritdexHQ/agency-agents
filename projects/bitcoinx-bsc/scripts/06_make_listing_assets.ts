@@ -95,6 +95,42 @@ async function main() {
   write("trustwallet-info.json", trustwallet);
   write("submission.json", submission);
 
+  // --- 4. Cau hinh cho trang web (web/index.html doc file nay) ---
+  const webConfig = {
+    chainId: Number(chainId),
+    chainName: cfg.name,
+    explorer: cfg.explorer,
+    btcx: address,
+    vault,
+    collateral: ethers.getAddress(d.collateral),
+    collateralSymbol: cfg.collateralSymbol,
+    pool: d.pool ? ethers.getAddress(d.pool) : null,
+    lens: d.lens ? ethers.getAddress(d.lens) : null,
+    rpcs:
+      Number(chainId) === 56
+        ? [
+            "https://bsc-dataseed.bnbchain.org",
+            "https://bsc-dataseed1.defibit.io",
+            "https://bsc-dataseed1.ninicoin.io",
+            "https://rpc.ankr.com/bsc",
+          ]
+        : ["https://data-seed-prebsc-1-s1.bnbchain.org:8545"],
+    links: {
+      github: process.env.GITHUB_URL || "https://github.com/example/bitcoinx",
+      dexscreener: d.pool ? `https://dexscreener.com/bsc/${d.pool}` : null,
+      pancakeswap: `https://pancakeswap.finance/swap?inputCurrency=${d.collateral}&outputCurrency=${address}`,
+    },
+  };
+  const webPath = path.join(__dirname, "..", "web", "config.js");
+  fs.writeFileSync(
+    webPath,
+    "// SINH TU DONG boi scripts/06_make_listing_assets.ts — dung sua tay.\n" +
+      "window.BITCOINX_CONFIG = " +
+      JSON.stringify(webConfig, null, 2) +
+      ";\n",
+  );
+  console.log(`  ${webPath}`);
+
   if (base.includes("example.com")) {
     console.log(
       `\nCANH BAO: LOGO_BASE_URL/PROJECT_URL van la example.com. Dat lai trong .env ` +

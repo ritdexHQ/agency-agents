@@ -32,6 +32,9 @@ Với ngân sách **$200 / 72 giờ**, đây là ranh giới trung thực:
 
 Chi tiết và số liệu: **[`docs/00-su-that-can-biet-truoc.md`](docs/00-su-that-can-biet-truoc.md)**.
 
+Sẵn sàng triển khai: **[`RUNBOOK.md`](RUNBOOK.md)** — từng lệnh, kết quả mong
+đợi, và điều kiện dừng ở mỗi bước.
+
 ---
 
 ## Kiến trúc
@@ -97,7 +100,26 @@ npm run assets:mainnet   # sinh hồ sơ listing từ địa chỉ thật
 | `npm run pool:*` | Tạo pool PancakeSwap V3 + nạp thanh khoản |
 | `npm run lens:*` | Deploy `BTCxPriceLens` |
 | `npm run peg:*` | Giám sát độ lệch neo (thoát mã 2 khi có cảnh báo) |
-| `npm run assets:*` | Sinh token list + `info.json` Trust Wallet + hồ sơ nộp |
+| `npm run assets:*` | Sinh token list + `info.json` Trust Wallet + hồ sơ nộp + `web/config.js` |
+| `npm run demo:local` | Dựng bản sao trên node Hardhat để xem trước website với số liệu on-chain thật |
+
+---
+
+## Website
+
+`web/index.html` là trang một-trang song ngữ VI/EN, không cần build, đọc **bằng
+chứng dự trữ trực tiếp từ BNB Smart Chain trong trình duyệt** (không qua máy chủ
+nào). Mọi hồ sơ listing đều bắt buộc có một website sống — đây là website đó.
+
+```bash
+npx hardhat node                 # cửa sổ 1
+npm run demo:local               # cửa sổ 2
+# mở web/index.html?local=1
+```
+
+Xuất bản qua GitHub Pages: copy `deploy/github-pages.yml` vào
+`.github/workflows/`, bật Settings → Pages → Source = GitHub Actions. Thư mục
+`brand/` được phục vụ cùng site nên dùng luôn làm `LOGO_BASE_URL`.
 
 ---
 
@@ -129,6 +151,7 @@ sách: [`docs/02-ngan-sach-200-usd.md`](docs/02-ngan-sach-200-usd.md).
 | [`03-ke-hoach-72-gio.md`](docs/03-ke-hoach-72-gio.md) | Lịch triển khai theo giờ, có cổng chặn |
 | [`04-logo-va-gia-tren-vi.md`](docs/04-logo-va-gia-tren-vi.md) | Ví lấy dữ liệu từ đâu và nộp hồ sơ ở đâu, theo thứ tự hiệu quả |
 | [`05-bao-mat-va-van-hanh.md`](docs/05-bao-mat-va-van-hanh.md) | Checklist bảo mật, xử lý quyền sở hữu, giám sát, giới hạn đã biết |
+| [`RUNBOOK.md`](RUNBOOK.md) | Trình tự triển khai copy-paste, có cổng chặn và bảng xử lý sự cố |
 
 ---
 

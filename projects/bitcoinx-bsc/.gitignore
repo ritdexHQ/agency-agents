@@ -9,3 +9,4 @@ deployments/*.local.json
 
 # Lockfile duoc commit co chu dich: deploy hop dong can build tai lap duoc.
 !package-lock.json
+web/config.local.js

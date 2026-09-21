@@ -22,7 +22,8 @@
     "assets:mainnet": "hardhat run scripts/06_make_listing_assets.ts --network bsc",
     "assets:testnet": "hardhat run scripts/06_make_listing_assets.ts --network bscTestnet",
     "logo": "python3 brand/generate_logo.py",
-    "gas": "hardhat run scripts/99_gas_report.ts"
+    "gas": "hardhat run scripts/99_gas_report.ts",
+    "demo:local": "hardhat run scripts/98_local_demo.ts --network localhost"
   },
   "devDependencies": {
     "@nomicfoundation/hardhat-toolbox": "^5.0.0",
